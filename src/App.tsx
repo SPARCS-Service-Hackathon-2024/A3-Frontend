@@ -1,5 +1,7 @@
+import Layout from "./components/layout";
+
 function App() {
-  return <main className="h-full w-full">A3 frontend </main>;
+  return <Layout>content</Layout>;
 }
 
 export default App;
