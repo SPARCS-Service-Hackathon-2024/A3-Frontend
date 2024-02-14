@@ -1,13 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function LineSplit({ text }: { text: string }) {
+export default function LineSplit({
+  text,
+  hasNext,
+  endDialog,
+}: {
+  text: string;
+  hasNext: boolean;
+  endDialog: () => void;
+}) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
 
   const addLine = useCallback(() => {
     if (allLines.length > lines.length) {
       setLines((lines) => [...lines, allLines[lines.length]]);
+    } else {
+      endDialog();
     }
   }, [allLines, lines]);
 
@@ -36,7 +46,7 @@ export default function LineSplit({ text }: { text: string }) {
             {index !== text.split("\n").length - 1 && <br />}
           </motion.div>
         ))}
-        {lines.length === allLines.length && (
+        {lines.length === allLines.length && hasNext && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 1 } }}
