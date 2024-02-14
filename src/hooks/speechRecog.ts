@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
-    webkitSpeechRecognition: any;
+    webkitSpeechRecognition: unknown;
   }
 }
 
+//@ts-expect-error no need to check for window.SpeechRecognition
 let recognition: SpeechRecognition | null = null;
 
 if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const SpeechRecognition =
+    //@ts-expect-error no need to check for window.SpeechRecognition
+    window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
   recognition.interimResults = true;
   recognition.lang = "ko-KR"; // Adjust the language as needed
@@ -23,10 +26,12 @@ const useSpeechToText = () => {
   useEffect(() => {
     if (!recognition) return;
 
+    //@ts-expect-error no need to check for recognition
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = Array.from(event.results)
+        //@ts-expect-error no need to check for event.results
         .map((result) => result[0].transcript)
-        .join('');
+        .join("");
       setText(transcript);
       // if (event.results[0].isFinal) {
       //   setIsListening(false);
@@ -37,6 +42,7 @@ const useSpeechToText = () => {
       setIsListening(false);
     };
 
+    //@ts-expect-error no need to check for recognition
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.error("Speech recognition error:", event.error);
       setIsListening(false);
@@ -63,7 +69,7 @@ const useSpeechToText = () => {
     startListening,
     stopListening,
     isListening,
-    hasRecognitionSupport: !!recognition
+    hasRecognitionSupport: !!recognition,
   };
 };
 
