@@ -36,7 +36,7 @@ export default function InputModal({
             <button
               className="btn btn-primary btn-lg w-full"
               onClick={() => {
-                submit();
+                // submit(); // Call submitAnswer function
                 close();
               }}
             >

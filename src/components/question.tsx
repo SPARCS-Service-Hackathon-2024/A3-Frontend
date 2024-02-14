@@ -12,14 +12,18 @@ export default function Question() {
   const [index, setIndex] = useState(0);
   const [dialog, setDialog] = useState<DialogType>(script[0]);
   const [isDialogEnd, setIsDialogEnd] = useState(false);
-  const { text, startListening, stopListening, isListening, hasRecognitionSupport } = userSpeechRecognition();
+  const {text, startListening, stopListening, isListening, hasRecognitionSupport } = userSpeechRecognition();
   const [isTextInputModalOpened, setIsTextInputModalOpened] = useState(false);
-
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState(text);
+  
   useEffect(() => {
     setDialog(script[index % script.length]);
     setIsDialogEnd(false);
   }, [index]);
+
+  useEffect(() => {
+    setAnswer(text);
+  }, [text]);
 
   const goToNextDialog = () => {
     if (isDialogEnd && !dialog.isQuestion && index < script.length - 1) {
@@ -62,16 +66,13 @@ export default function Question() {
             exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
             className="flex h-full w-full flex-col items-center justify-end gap-4 px-12 pb-8"
           >
-            {/* <button className="btn btn-primary btn-lg btn-circle h-32 w-32 shrink-0 text-5xl">
-              <FaMicrophone />
 
-            </button> */}
             <>
             {hasRecognitionSupport && (
               <>
                 <button
                   onClick={isListening ? stopListening : startListening}
-                  className="btn btn-primary btn-lg font-sans-serif w-full flex items-center justify-center gap-2"
+                  className="btn mt-6 rounded-lg btn-primary btn-lg font-sans-serif w-full flex items-center justify-center gap-2"
                 >
                   {isListening ? (
                     <>
@@ -88,29 +89,23 @@ export default function Question() {
               </>
             )}
 
-            {/* Text Area to display and edit the transcribed text */}
-            <textarea
-              className="mt-4 w-full p-2 border rounded"
-              value={text}
-              onChange={(e) => setText(e.target.value)} // Allows editing the text
-              placeholder="음성을 녹음 시 여기에 표시됩니다."
-              rows={5} // Adjust the number of rows as needed
-              disabled={!hasRecognitionSupport} // Optionally disable if recognition is not supported
-            ></textarea>
+            <p className="mt-2 mb-2 w-full p-2 border-4 rounded-lg"
+              style={{
+                minHeight: '200px'
+              }}> 
+            
+              {answer}
+            </p>
 
             </>
-
-            <button className="btn btn-primary btn-lg font-sans-serif w-full">
-
-            </button>
             <button
-              className="btn btn-primary btn-lg font-sans-serif w-full"
+              className="btn rounded-lg btn-primary btn-lg font-sans-serif w-full"
               onClick={() => setIsTextInputModalOpened(true)}
             >
-              직접 입력하기
+              수정하기
             </button>
             <button
-              className="btn btn-primary btn-outline btn-lg font-sans-serif w-full"
+              className="btn rounded-lg btn-primary btn-outline btn-lg font-sans-serif w-full"
               onClick={() => skipQuestion()}
             >
               이 질문 건너뛰기

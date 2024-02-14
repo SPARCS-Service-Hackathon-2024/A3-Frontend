@@ -22,7 +22,7 @@ export default function LineSplit({
   }, [allLines, lines]);
 
   useEffect(() => {
-    const interval = setInterval(addLine, 1000);
+    const interval = setInterval(addLine, 1);
     return () => clearInterval(interval);
   }, [addLine]);
 
