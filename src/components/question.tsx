@@ -12,7 +12,7 @@ export default function Question() {
   const [index, setIndex] = useState(0);
   const [dialog, setDialog] = useState<DialogType>(script[0]);
   const [isDialogEnd, setIsDialogEnd] = useState(false);
-  const { startListening, stopListening, isListening, hasRecognitionSupport } = userSpeechRecognition();
+  const { text, startListening, stopListening, isListening, hasRecognitionSupport } = userSpeechRecognition();
 
   useEffect(() => {
     setDialog(script[index % script.length]);
@@ -64,8 +64,8 @@ export default function Question() {
                 >
                   {isListening ? (
                     <>
-                      <img src="bars.svg" alt="" style={{ width: '1em', height: '1em' }} />
-                      듣고 있습니다
+                      <img src="src/components/icons/bars.svg" alt="" style={{ width: '2em', height: '2em' }} />
+                      음성 녹음 중
                     </>
                   ) : (
                     <>
@@ -81,7 +81,7 @@ export default function Question() {
                 className="mt-4 w-full p-2 border rounded"
                 value={text}
                 onChange={(e) => setText(e.target.value)} // Allows editing the text
-                placeholder="Transcribed text will appear here..."
+                placeholder="음성을 녹음 시 여기에 표시됩니다."
                 rows={5} // Adjust the number of rows as needed
                 disabled={!hasRecognitionSupport} // Optionally disable if recognition is not supported
               ></textarea>
