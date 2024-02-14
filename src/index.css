@@ -4,6 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "ChosunKm";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunKm.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
-  font-family: "Pretendard", sans-serif;
+  font-family: "ChoSunKm", serif;
+}
+
+@layer components {
+  .font-serif {
+    @apply font-['ChosunKm'];
+  }
+  .font-san-serif {
+    @apply font-['Pretendard'];
+  }
 }
