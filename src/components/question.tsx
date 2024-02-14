@@ -17,7 +17,7 @@ export default function Question() {
   }, [index]);
 
   const handleSkip = () => {
-    if (isDialogEnd) {
+    if (isDialogEnd && !dialog.isQuestion && index < script.length - 1) {
       setIndex(index + 1);
     }
   };
