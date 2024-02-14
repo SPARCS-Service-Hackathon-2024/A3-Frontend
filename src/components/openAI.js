@@ -1,4 +1,5 @@
 import {OpenAIApi, Configuration} from 'openai';
+import process from 'process';
 
 export default async (req, res) => {
     const {text} = req.body;
