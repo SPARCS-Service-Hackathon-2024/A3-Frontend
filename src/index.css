@@ -32,6 +32,10 @@
   font-family: "KimjungchulMyungjo", serif;
 }
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
 @layer components {
   .font-serif {
     @apply font-['ChosunKm'];
