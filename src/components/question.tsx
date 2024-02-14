@@ -5,16 +5,17 @@ import { DialogType } from "../dialog";
 import { FaMicrophone } from "react-icons/fa6";
 import cc from "classcat";
 import { AnimatePresence, motion } from "framer-motion";
+import userSpeechRecognition from "../pages/speechRecog";
 import InputModal from "./input-modal";
 
 export default function Question() {
   const [index, setIndex] = useState(0);
   const [dialog, setDialog] = useState<DialogType>(script[0]);
   const [isDialogEnd, setIsDialogEnd] = useState(false);
+  const { text, startListening, stopListening, isListening, hasRecognitionSupport } = userSpeechRecognition();
   const [isTextInputModalOpened, setIsTextInputModalOpened] = useState(false);
 
   const [answer, setAnswer] = useState("");
-
   useEffect(() => {
     setDialog(script[index % script.length]);
     setIsDialogEnd(false);
@@ -35,6 +36,7 @@ export default function Question() {
     setAnswer("");
     setIndex(index + 1);
   };
+
 
   return (
     <div
@@ -60,8 +62,46 @@ export default function Question() {
             exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
             className="flex h-full w-full flex-col items-center justify-end gap-4 px-12 pb-8"
           >
-            <button className="btn btn-primary btn-lg btn-circle h-32 w-32 shrink-0 text-5xl">
+            {/* <button className="btn btn-primary btn-lg btn-circle h-32 w-32 shrink-0 text-5xl">
               <FaMicrophone />
+
+            </button> */}
+            <>
+            {hasRecognitionSupport && (
+              <>
+                <button
+                  onClick={isListening ? stopListening : startListening}
+                  className="btn btn-primary btn-lg font-sans-serif w-full flex items-center justify-center gap-2"
+                >
+                  {isListening ? (
+                    <>
+                      <img src="src/components/icons/bars.svg" alt="" style={{ width: '2em', height: '2em' }} />
+                      음성 녹음 중
+                    </>
+                  ) : (
+                    <>
+                      <FaMicrophone style={{ fontSize: '1.5rem' }} />
+                      음성 기록
+                    </>
+                  )}
+                </button>
+              </>
+            )}
+
+            {/* Text Area to display and edit the transcribed text */}
+            <textarea
+              className="mt-4 w-full p-2 border rounded"
+              value={text}
+              onChange={(e) => setText(e.target.value)} // Allows editing the text
+              placeholder="음성을 녹음 시 여기에 표시됩니다."
+              rows={5} // Adjust the number of rows as needed
+              disabled={!hasRecognitionSupport} // Optionally disable if recognition is not supported
+            ></textarea>
+
+            </>
+
+            <button className="btn btn-primary btn-lg font-sans-serif w-full">
+
             </button>
             <button
               className="btn btn-primary btn-lg font-sans-serif w-full"
