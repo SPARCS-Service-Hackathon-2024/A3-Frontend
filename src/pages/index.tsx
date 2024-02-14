@@ -3,7 +3,7 @@ import Layout from "../components/layout";
 function Home() {
   return (
     <Layout>
-      <div className="flex h-full w-full flex-col items-center pt-24 text-2xl">
+      <div className="flex h-full w-full flex-col items-center pt-32 text-2xl">
         <img src="/laura_default.gif" />
         <div className="mt-12 break-keep px-8 text-center">
           안녕하세요,
