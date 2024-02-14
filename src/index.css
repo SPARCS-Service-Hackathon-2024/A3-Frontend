@@ -36,7 +36,7 @@
   .font-serif {
     @apply font-['ChosunKm'];
   }
-  .font-san-serif {
+  .font-sans-serif {
     @apply font-['Pretendard'];
   }
 }
