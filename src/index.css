@@ -5,15 +5,31 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "ChosunKm";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunKm.woff")
-    format("woff");
-  font-weight: normal;
+  font-family: "KimjungchulMyungjo";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Regular.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "KimjungchulMyungjo";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Light.woff2")
+    format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "KimjungchulMyungjo";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2")
+    format("woff2");
+  font-weight: 700;
   font-style: normal;
 }
 
 * {
-  font-family: "ChoSunKm", serif;
+  font-family: "KimjungchulMyungjo", serif;
 }
 
 @layer components {
