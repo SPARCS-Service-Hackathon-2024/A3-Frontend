@@ -5,7 +5,7 @@ import { DialogType } from "../dialog";
 import { FaMicrophone } from "react-icons/fa6";
 import cc from "classcat";
 import { AnimatePresence, motion } from "framer-motion";
-import userSpeechRecognition from "../pages/userSpeechRecognition";
+import userSpeechRecognition from "../pages/speechRecog";
 
 
 export default function Question() {
@@ -57,7 +57,8 @@ export default function Question() {
               <FaMicrophone />
             </button> */}
             <>
-              {hasRecognitionSupport && (
+            {hasRecognitionSupport && (
+              <>
                 <button
                   onClick={isListening ? stopListening : startListening}
                   className="btn btn-primary btn-lg font-sans-serif w-full flex items-center justify-center gap-2"
@@ -74,17 +75,19 @@ export default function Question() {
                     </>
                   )}
                 </button>
-              )}
+              </>
+            )}
 
-              {/* Text Area to display and edit the transcribed text */}
-              <textarea
-                className="mt-4 w-full p-2 border rounded"
-                value={text}
-                onChange={(e) => setText(e.target.value)} // Allows editing the text
-                placeholder="음성을 녹음 시 여기에 표시됩니다."
-                rows={5} // Adjust the number of rows as needed
-                disabled={!hasRecognitionSupport} // Optionally disable if recognition is not supported
-              ></textarea>
+            {/* Text Area to display and edit the transcribed text */}
+            <textarea
+              className="mt-4 w-full p-2 border rounded"
+              value={text}
+              onChange={(e) => setText(e.target.value)} // Allows editing the text
+              placeholder="음성을 녹음 시 여기에 표시됩니다."
+              rows={5} // Adjust the number of rows as needed
+              disabled={!hasRecognitionSupport} // Optionally disable if recognition is not supported
+            ></textarea>
+
             </>
 
             <button className="btn btn-primary btn-lg font-sans-serif w-full">
