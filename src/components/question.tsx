@@ -5,11 +5,14 @@ import { DialogType } from "../dialog";
 import { FaMicrophone } from "react-icons/fa6";
 import cc from "classcat";
 import { AnimatePresence, motion } from "framer-motion";
+import userSpeechRecognition from "../pages/userSpeechRecognition";
+
 
 export default function Question() {
   const [index, setIndex] = useState(0);
   const [dialog, setDialog] = useState<DialogType>(script[0]);
   const [isDialogEnd, setIsDialogEnd] = useState(false);
+  const { startListening, stopListening, isListening, hasRecognitionSupport } = userSpeechRecognition();
 
   useEffect(() => {
     setDialog(script[index % script.length]);
@@ -21,6 +24,10 @@ export default function Question() {
       setIndex(index + 1);
     }
   };
+
+  function setText(value: string): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div
@@ -46,9 +53,40 @@ export default function Question() {
             exit={{ opacity: 0, y: 64, transition: { duration: 0.2 } }}
             className="flex h-full w-full flex-col items-center justify-end gap-4 px-12 pb-12"
           >
-            <button className="btn btn-primary btn-lg btn-circle h-32 w-32 shrink-0 text-5xl">
+            {/* <button className="btn btn-primary btn-lg btn-circle h-32 w-32 shrink-0 text-5xl">
               <FaMicrophone />
-            </button>
+            </button> */}
+            <>
+              {hasRecognitionSupport && (
+                <button
+                  onClick={isListening ? stopListening : startListening}
+                  className="btn btn-primary btn-lg font-sans-serif w-full flex items-center justify-center gap-2"
+                >
+                  {isListening ? (
+                    <>
+                      <img src="bars.svg" alt="" style={{ width: '1em', height: '1em' }} />
+                      듣고 있습니다
+                    </>
+                  ) : (
+                    <>
+                      <FaMicrophone style={{ fontSize: '1.5rem' }} />
+                      음성 기록
+                    </>
+                  )}
+                </button>
+              )}
+
+              {/* Text Area to display and edit the transcribed text */}
+              <textarea
+                className="mt-4 w-full p-2 border rounded"
+                value={text}
+                onChange={(e) => setText(e.target.value)} // Allows editing the text
+                placeholder="Transcribed text will appear here..."
+                rows={5} // Adjust the number of rows as needed
+                disabled={!hasRecognitionSupport} // Optionally disable if recognition is not supported
+              ></textarea>
+            </>
+
             <button className="btn btn-primary btn-lg font-sans-serif w-full">
               직접 입력하기
             </button>
