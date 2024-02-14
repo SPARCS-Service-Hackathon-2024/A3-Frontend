@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+//@ts-expect-error no type definition
+import { useSpeechSynthesis } from "react-speech-kit";
 
 export default function LineSplit({
   text,
@@ -12,6 +14,7 @@ export default function LineSplit({
 }) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
+  const { speak } = useSpeechSynthesis();
 
   const addLine = useCallback(() => {
     if (allLines.length > lines.length) {
@@ -29,6 +32,16 @@ export default function LineSplit({
   useEffect(() => {
     setAllLines(text.split("\n"));
     setLines([]);
+    setTimeout(
+      () =>
+        speak({
+          text: text.split("\n").join(" "),
+          lang: "ko-KR",
+          pitch: 1.7,
+          rate: 1.5,
+        }),
+      100,
+    );
   }, [text]);
 
   return (
