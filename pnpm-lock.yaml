@@ -29,6 +29,9 @@ dependencies:
   react-icons:
     specifier: ^5.0.1
     version: 5.0.1(react@18.2.0)
+  react-kakao-login:
+    specifier: ^2.1.1
+    version: 2.1.1(react@18.2.0)
   react-router:
     specifier: ^6.22.0
     version: 6.22.0(react@18.2.0)
@@ -4027,6 +4030,14 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
+
+  /react-kakao-login@2.1.1(react@18.2.0):
+    resolution: {integrity: sha512-t9htk41/i0zUY7q92mtqdqVZZ018BPi1DgbSVVrPCmuMKhZGJOnZ9OfaKLVPu3sn8QXbJc3dPwqKOiElpb44hQ==}
+    peerDependencies:
+      react: '>= 15.3.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-refresh@0.14.0:
