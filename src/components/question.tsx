@@ -86,7 +86,7 @@ export default function Question() {
   return (
     <div
       className={cc([
-        "flex h-full flex-col items-center overflow-hidden transition-all duration-500",
+        "flex h-full w-full flex-col items-center overflow-hidden transition-all duration-500",
         dialog?.is_answerable && isDialogEnd && !loading ? "pt-0" : "pt-24",
       ])}
       onClick={() => {

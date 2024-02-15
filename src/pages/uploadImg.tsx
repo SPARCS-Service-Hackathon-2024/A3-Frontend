@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import Layout from "../components/layout";
 
 function UploadImg() {
@@ -25,13 +25,15 @@ function UploadImg() {
 
   return (
     <Layout>
-      <section className="flex flex-col h-screen items-center justify-start pt-20">
-        <div className="text-center mb-6">
-          <p className="text-4xl font-semibold mb-1">사진 올리기</p>
-          <p className="text-2xl mt-4 font-normal">최대 5장까지 올릴 수 있습니다</p>
+      <section className="flex h-screen flex-col items-center justify-start pt-20">
+        <div className="mb-6 text-center">
+          <p className="mb-1 text-4xl font-semibold">사진 올리기</p>
+          <p className="mt-4 text-2xl font-normal">
+            최대 5장까지 올릴 수 있습니다
+          </p>
         </div>
         <div className="text-lg font-semibold">
-          <label className="text-2xl cursor-pointer bg-green-50 text-green-700 hover:bg-green-100 py-3 px-5 rounded-full file:cursor-pointer">
+          <label className="cursor-pointer rounded-full bg-green-50 px-5 py-3 text-2xl text-green-700 file:cursor-pointer hover:bg-green-100">
             파일 선택
             <input
               className="hidden"
@@ -55,7 +57,7 @@ function UploadImg() {
               </p>
             ) : (
               <button
-                className="text-2xl rounded-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 "
+                className="rounded-full bg-blue-500 px-4 py-2 text-2xl font-bold text-white hover:bg-blue-700 "
                 onClick={() => {
                   console.log(selectedImages);
                 }}
@@ -66,12 +68,16 @@ function UploadImg() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-4 mt-4 w-full px-6">
+        <div className="mt-4 grid w-full grid-cols-2 gap-4 px-6">
           {selectedImages.map((image, index) => (
             <div key={image} className="relative">
-              <img src={image} className="h-auto w-full object-cover rounded-lg" alt="upload" />
+              <img
+                src={image}
+                className="h-auto w-full rounded-lg object-cover"
+                alt="upload"
+              />
               <button
-                className="absolute top-0 right-0 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full"
+                className="absolute right-0 top-0 rounded-full bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
                 onClick={() => deleteHandler(image)}
               >
                 삭제
