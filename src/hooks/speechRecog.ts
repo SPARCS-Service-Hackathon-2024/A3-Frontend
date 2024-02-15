@@ -11,7 +11,6 @@ declare global {
   }
 }
 
-//@ts-expect-error no need to check for window.SpeechRecognition
 let recognition: SpeechRecognition | null = null;
 
 if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
@@ -37,7 +36,6 @@ const useSpeechToText = () => {
   useEffect(() => {
     if (!recognition) return;
 
-    //@ts-expect-error no need to check for recognition
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = Array.from(event.results)
         .map((result) => result[0].transcript)
@@ -52,7 +50,6 @@ const useSpeechToText = () => {
       setIsListening(false);
     };
 
-    //@ts-expect-error no need to check for recognition
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.error("Speech recognition error:", event.error);
       setIsListening(false);
