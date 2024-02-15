@@ -8,7 +8,6 @@ function UploadImg() {
     if (event.target.files) {
       const selectedFiles = event.target.files;
       const selectedFilesArray = Array.from(selectedFiles);
-
       const imagesArray: string[] = selectedFilesArray.map((file) => {
         return URL.createObjectURL(file);
       });
@@ -27,10 +26,10 @@ function UploadImg() {
 
   return (
     <Layout>
-    <section className="p-4">
+    <section className="flex h-screen flex-col items-center justify-center">
       <label className="block mb-4 text-lg font-semibold">
-        + Add Images
-        <span className="block text-sm font-normal">up to 10 images</span>
+        사진 올리기
+        <span className="block text-sm font-normal">최대 5장까지 올릴 수 있습니다</span>
         <input
           className="block w-full text-sm text-gray-500
             file:mr-4 file:py-2 file:px-4
@@ -49,11 +48,11 @@ function UploadImg() {
 
       {selectedImages.length > 0 && (
         <div>
-          {selectedImages.length > 10 ? (
+          {selectedImages.length > 5 ? (
             <p className="text-red-500">
-              You can't upload more than 10 images! <br />
+              5장 이상 올릴 수 없습니다 <br />
               <span>
-                please delete <b>{selectedImages.length - 10}</b> of them
+                 사진 <b>{selectedImages.length - 5}</b> 장을 삭제해주세요
               </span>
             </p>
           ) : (
@@ -63,7 +62,7 @@ function UploadImg() {
                 console.log(selectedImages);
               }}
             >
-              UPLOAD {selectedImages.length} IMAGE{selectedImages.length === 1 ? "" : "S"}
+              사진 {selectedImages.length} 장을 제출하기 
             </button>
           )}
         </div>
@@ -77,7 +76,7 @@ function UploadImg() {
               className="absolute top-0 right-0 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full"
               onClick={() => deleteHandler(image)}
             >
-              Delete
+              삭제
             </button>
             <p className="text-center">{index + 1}</p>
           </div>
