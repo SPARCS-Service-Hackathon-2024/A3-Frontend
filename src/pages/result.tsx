@@ -1,7 +1,10 @@
+// Result.js
+import React, { useState } from 'react';
 import Layout from "../components/layout";
-import { useUser } from "../store/useUser";
+import Modal from '../components/layout/Modal'; // Adjust the import path as needed
+import * as backgrounds from '../components/backgrounds/index';
 
-// Helper function to split text into chunks of up to 2 sentences
+  // Helper function to split text into chunks of up to 2 sentences
 function splitTextIntoChunks(text: string) {
   const sentences: string[] = text.match(/[^.!?]+[.!?]+/g) || [];
   const chunks: string[] = [];
@@ -11,8 +14,9 @@ function splitTextIntoChunks(text: string) {
   return chunks;
 }
 
-export default function Main() {
-  const { user } = useUser();
+export default function Result() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBackground, setSelectedBackground] = useState('');
 
   const output = [
     { speaker: "ai", text: "가장 기억에 남는 일은 무엇인가요?" },
@@ -22,16 +26,18 @@ export default function Main() {
     },
   ];
 
-  // Inline styles for book page effects
+  // Convert backgrounds object to array
+  const backgroundImages = Object.values(backgrounds).slice(0, 4);
+
   const bookPageStyle = {
-    background:
-      'url("https://img.freepik.com/premium-vector/white-gray-background-with-soft-watercolor-texture_34396-342.jpg")', // Replace with your paper texture image path
-    color: "#5a4b33", // Adjust the text color to match an ink-like appearance
-    padding: "2rem",
-    marginTop: "2rem",
-    marginBottom: "2rem",
-    borderRadius: "8px", // Optional: adds rounded corners to your "page"
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)", // Optional: adds a subtle shadow for depth
+    background: selectedBackground ? `url(${selectedBackground})` : 'none',
+    backgroundSize: 'cover',
+    color: '#5a4b33',
+    padding: '2rem',
+    marginTop: '2rem',
+    marginBottom: '2rem',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
   };
 
   const textStyle = {
@@ -43,18 +49,33 @@ export default function Main() {
   return (
     <Layout>
       <div
-        className="flex h-full w-full flex-col items-center pt-16 text-2xl"
+        className="flex h-full w-full flex-col min-h-screen items-center pt-16 text-2xl"
         style={bookPageStyle}
       >
+      <div className="space-x-8" style={{ alignSelf: 'flex-end', marginRight: '0rem' }}>
+          <button 
+            onClick={() => setIsModalOpen(true)} 
+            className="bg-[#8B4513]  mt-8 text-white opacity-60 font-bold py-2 px-4 rounded cursor-pointer hover:opacity-80">
+            배경 바꾸기
+          </button>
+
+          <button 
+            onClick={() => {/* TODO: Add click handler if needed */}} 
+            className="bg-[#8B4513] text-white opacity-60 font-bold py-2 px-4 rounded cursor-pointer hover:opacity-80">
+            다음 페이지
+          </button>
+
+        </div>
+        <div className="flex h-full w-full flex-col items-center pt-6 text-2xl" style={bookPageStyle}>
         {output.map((item, index) => (
           <div key={index} style={textStyle}>
             {item.speaker === "ai" ? (
-              <div className="mb-4 mt-8 text-left text-2xl font-bold">
+              <div className="text-left text-2xl font-bold mt-8 mb-4">
                 {item.text}
               </div>
             ) : (
               splitTextIntoChunks(item.text).map((chunk, chunkIndex) => (
-                <div key={chunkIndex} className="mb-8 mt-8 text-center text-xl">
+                <div key={chunkIndex} className="text-center text-xl mb-8 mt-8">
                   {chunk}
                 </div>
               ))
@@ -62,6 +83,21 @@ export default function Main() {
           </div>
         ))}
       </div>
+      </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h2 className="text-xl font-bold mb-4">원하는 배경을 골라주세요</h2>
+        <div className="grid grid-cols-2 gap-4">
+          {backgroundImages.map((bg, index) => (
+            <img key={index} src={bg} alt={`Background ${index + 1}`}
+                 className="cursor-pointer rounded-md shadow-lg w-full h-48 object-cover"
+                 onClick={() => {
+                   setSelectedBackground(bg);
+                   setIsModalOpen(false);
+                 }} />
+          ))}
+        </div>
+      </Modal>
+      
     </Layout>
   );
 }

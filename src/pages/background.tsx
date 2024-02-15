@@ -3,8 +3,8 @@ import Layout from "../components/layout";
 import * as backgrounds from '../components/backgrounds/index';
 
 function Background() {
-  const [selectedBackground, setSelectedBackground] = React.useState('');
-
+    const [selectedBackground, setSelectedBackground] = React.useState('');
+    // const { setSelectedBackground } = useBackground();
   // Convert backgrounds object to array and limit to the first 4 items for a 2x2 grid
   const backgroundImages = Object.values(backgrounds).slice(0, 4);
 
@@ -23,7 +23,7 @@ function Background() {
           </div>
           {selectedBackground && (
             <div className="mt-4">
-              <p>Selected Background:</p>
+              <p>선택된 배경</p>
               {/* Adjust size as needed */}
               <img src={selectedBackground} alt="Selected Background" className="inline-block rounded-md shadow-lg w-32 h-32 object-cover" />
             </div>
