@@ -96,13 +96,17 @@ export default function Question() {
       }}
     >
       <img
-        src={isListening || loading ? "/bomi/write.gif" : "/bomi/default.gif"}
+        src={
+          isListening || (dialog?.is_answerable && loading)
+            ? "/bomi/write.gif"
+            : "/bomi/default.gif"
+        }
         className="h-[300px]"
       />
       {dialog && (
         <>
           <div className="shrink px-8 pt-8 text-center">
-            {loading ? (
+            {dialog?.is_answerable && loading ? (
               <div className="text-center">말씀하신 내용을 적고 있어요.</div>
             ) : (
               <LineSplit
