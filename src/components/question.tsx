@@ -44,20 +44,21 @@ export default function Question() {
     setIndex(index + 1);
   };
 
-  const handleRecordingDone = () => {
-    setHasRecordedOnce(true); // Update the state to show the buttons
+  const handleStartRecording = () => {
+    startListening();
+    setHasRecordedOnce(false); // Reset on start
   };
 
-  const handleRecordAgain = () => {
-    // Implement the logic to start recording again
-    startListening();
-    setHasRecordedOnce(false); // Optional: Hide buttons until recording is done again
+  const handleStopRecording = () => {
+    stopListening();
+    setIsTextInputModalOpened(true);
+    setHasRecordedOnce(true); // Set to true when recording is stopped
+    console.log(answer)
   };
 
   useEffect(() => {
     if (text) {
       setAnswer(text);
-      handleRecordingDone();
     }
   }, [text]);
 
@@ -89,53 +90,33 @@ export default function Question() {
             className="flex h-full w-full flex-col items-center justify-end gap-4 px-12 pb-8"
           >
             <>
-              {hasRecognitionSupport && (
+            {hasRecognitionSupport && (
+                <button
+                  onClick={isListening ? handleStopRecording : handleStartRecording}
+                  className="btn mb-4 mt-8 btn-primary btn-lg font-sans-serif btn-circle relative h-32 w-32 text-5xl"
+                >
+                  {isListening && <div className="bg-primary/10 animate-recording absolute inset-0 rounded-full" />}
+                  {isListening ? <div className="loading loading-bars" /> : <FaMicrophone />}
+                </button>
+              )}
+              {hasRecordedOnce && (
                 <>
                   <button
-                    onClick={
-                      isListening
-                        ? () => {
-                            stopListening();
-                            setIsTextInputModalOpened(true);
-                          }
-                        : () => startListening()
-                    }
-                    className="font-sans-serif btn btn-circle btn-primary btn-lg relative h-32 w-32 text-5xl"
+                    className="btn mb-8 btn-success btn-lg font-sans-serif w-full"
+                    onClick={goToNextDialog}
                   >
-                    {isListening && (
-                      <div className="animate-recording absolute inset-0 rounded-full bg-primary/10" />
-                    )}
-                    {isListening ? (
-                      <div className="loading loading-bars" />
-                    ) : (
-                      <FaMicrophone />
-                    )}
+                    기록 되었습니다. 넘어갈까요?
+                  </button>
+                  <button
+                    className="btn mb-8 btn-secondary btn-outline btn-lg font-sans-serif w-full"
+                    onClick={handleStartRecording}
+                  >
+                    다시 기록하기
                   </button>
                 </>
               )}
+
             </>
-            {hasRecordedOnce && ( // Conditionally render the new buttons
-              <>
-                <button
-                  className="font-sans-serif btn btn-success btn-lg mb-8 w-full"
-                  onClick={goToNextDialog}
-                >
-                  기록 되었습니다. 넘어갈까요?
-                </button>
-                <button
-                  className="font-sans-serif btn btn-outline btn-secondary btn-lg mb-8 w-full"
-                  onClick={handleRecordAgain}
-                >
-                  다시 기록하기
-                </button>
-              </>
-            )}
-            {/* <button
-              className="btn btn-primary btn-lg font-sans-serif w-full"
-              onClick={() => setIsTextInputModalOpened(true)}
-            >
-              직접 입력하기
-            </button> */}
             <button
               className="font-sans-serif btn btn-outline btn-primary btn-lg w-full"
               onClick={() => skipQuestion()}
