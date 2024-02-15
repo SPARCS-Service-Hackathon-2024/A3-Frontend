@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 declare global {
   interface Window {
     webkitSpeechRecognition: unknown;
-    navigator: {
-      userAgentData?: {
-        mobile: boolean;
-      };
+  }
+  interface Navigator {
+    userAgentData?: {
+      mobile: boolean;
     };
   }
 }
@@ -23,12 +23,11 @@ if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
   recognition.lang = "ko-KR"; // Adjust the language as needed
   // recognition.continuous = true;
 
-    // Detect if the app is loaded on a mobile device
-    //@ts-expect-error no need to check for window.navigator.userAgentData
-    const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
+  // Detect if the app is loaded on a mobile device
+  const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
 
-    // Set the continuous flag based on the device type
-    recognition.continuous = !isMobileDevice;
+  // Set the continuous flag based on the device type
+  recognition.continuous = !isMobileDevice;
 }
 
 const useSpeechToText = () => {

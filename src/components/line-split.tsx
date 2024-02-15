@@ -47,11 +47,11 @@ export default function LineSplit({
       setPlaying(false);
     };
     setAudio(newAudio);
-  }, [text]);
+  }, [text, muted]);
 
   const mute = useCallback(() => {
     if (!audio) return;
-    audio.muted = muted;
+    audio.volume = muted ? 0 : 1;
     setPlaying(!muted && !audio.paused);
   }, [audio, muted]);
 
@@ -61,7 +61,7 @@ export default function LineSplit({
 
   useEffect(() => {
     handlePlayTTS();
-  }, [handlePlayTTS]);
+  }, [text]);
 
   useEffect(() => {
     const interval = setInterval(addLine, 400);
