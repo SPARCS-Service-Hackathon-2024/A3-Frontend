@@ -10,12 +10,14 @@ export default function LineSplit({
   endDialog,
   hidden,
   muted,
+  setPlaying,
 }: {
   text: string;
   hasNext: boolean;
   endDialog: () => void;
   hidden: boolean;
   muted: boolean;
+  setPlaying: (playing: boolean) => void;
 }) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
@@ -33,16 +35,24 @@ export default function LineSplit({
 
   const handlePlayTTS = useCallback(async () => {
     audio?.pause();
+    setPlaying(false);
     const newAudio = await tts(
       text.replace("%username%", user!.name).replace(/\\n/g, " "),
     );
     newAudio.play();
+    newAudio.onplay = () => {
+      setPlaying(true);
+    };
+    newAudio.onpause = () => {
+      setPlaying(false);
+    };
     setAudio(newAudio);
-  }, [text]);
+  }, [text, muted]);
 
   const mute = useCallback(() => {
     if (!audio) return;
-    audio.muted = muted;
+    audio.volume = muted ? 0 : 1;
+    setPlaying(!muted && !audio.paused);
   }, [audio, muted]);
 
   useEffect(() => {
@@ -51,7 +61,7 @@ export default function LineSplit({
 
   useEffect(() => {
     handlePlayTTS();
-  }, [handlePlayTTS]);
+  }, [text]);
 
   useEffect(() => {
     const interval = setInterval(addLine, 400);

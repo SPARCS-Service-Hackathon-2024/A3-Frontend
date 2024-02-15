@@ -15,6 +15,7 @@ export default function Question() {
   const [isDialogEnd, setIsDialogEnd] = useState(false);
   const {
     text,
+    reset,
     startListening,
     stopListening,
     isListening,
@@ -23,6 +24,7 @@ export default function Question() {
   const [hasRecordedOnce, setHasRecordedOnce] = useState(false); //to track if recording has been made
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
+  const [playing, setPlaying] = useState(false);
 
   const fetchQuestion = useCallback(async () => {
     if (!user) return;
@@ -67,6 +69,7 @@ export default function Question() {
   };
 
   const handleStartRecording = () => {
+    reset();
     startListening();
     setHasRecordedOnce(false);
   };
@@ -100,24 +103,31 @@ export default function Question() {
         src={
           isListening || (dialog?.is_answerable && loading)
             ? "/bomi/write.gif"
-            : "/bomi/default.gif"
+            : playing
+              ? "/bomi/speak.gif"
+              : "/bomi/default.gif"
         }
         className="h-[250px]"
       />
       {dialog && (
         <>
-          <div className="px-8 pt-8 text-center">
-            {dialog?.is_answerable && loading && (
-              <div className="text-center">말씀하신 내용을 적고 있어요.</div>
-            )}
+          <div className="flex justify-center px-8 pt-8 text-center">
+            {loading &&
+              (dialog?.is_answerable ? (
+                <div className="text-center">말씀하신 내용을 적고 있어요.</div>
+              ) : (
+                <div className="loading loading-md" />
+              ))}
             <LineSplit
               text={dialog.content}
               hasNext={!dialog.is_answerable}
               endDialog={() => setIsDialogEnd(true)}
               hidden={dialog?.is_answerable && loading}
               muted={isListening}
+              setPlaying={setPlaying}
             />
           </div>
+          {answer}
           <AnimatePresence>
             {dialog.is_answerable && isDialogEnd && !loading && (
               <motion.div

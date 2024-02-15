@@ -2,34 +2,37 @@ import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
-    webkitSpeechRecognition: unknown;
-    navigator: {
-      userAgentData?: {
-        mobile: boolean;
-      };
+    //eslint-disable-next-line
+    webkitSpeechRecognition: any;
+    //eslint-disable-next-line
+    SpeechRecognition: any;
+  }
+  interface Navigator {
+    userAgentData?: {
+      mobile: boolean;
     };
   }
 }
 
-//@ts-expect-error no need to check for window.SpeechRecognition
 let recognition: SpeechRecognition | null = null;
 
 if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
   const SpeechRecognition =
-    //@ts-expect-error no need to check for window.SpeechRecognition
     window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
   recognition.interimResults = true;
   recognition.lang = "ko-KR"; // Adjust the language as needed
   // recognition.continuous = true;
 
-    // Detect if the app is loaded on a mobile device
-    //@ts-expect-error no need to check for window.navigator.userAgentData
-    const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
+  // Detect if the app is loaded on a mobile device
+  const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
 
-    // Set the continuous flag based on the device type
-    recognition.continuous = !isMobileDevice;
+  // Set the continuous flag based on the device type
+  recognition.continuous = !isMobileDevice;
 }
+
+let prev = "",
+  now = "";
 
 const useSpeechToText = () => {
   const [text, setText] = useState<string>("");
@@ -38,22 +41,23 @@ const useSpeechToText = () => {
   useEffect(() => {
     if (!recognition) return;
 
-    //@ts-expect-error no need to check for recognition
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = Array.from(event.results)
         .map((result) => result[0].transcript)
         .join("");
-      setText(transcript);
-      // if (event.results[0].isFinal) {
-      //   setIsListening(false);
-      // }
+      now = transcript;
     };
 
     recognition.onend = () => {
-      setIsListening(false);
+      prev = prev + now;
+      setText(prev);
+      if (window.navigator.userAgentData?.mobile ?? false) {
+        recognition.start();
+      } else {
+        setIsListening(false);
+      }
     };
 
-    //@ts-expect-error no need to check for recognition
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.error("Speech recognition error:", event.error);
       setIsListening(false);
@@ -65,7 +69,6 @@ const useSpeechToText = () => {
   }, []);
 
   const startListening = () => {
-    setText("");
     setIsListening(true);
     recognition?.start();
   };
@@ -75,8 +78,15 @@ const useSpeechToText = () => {
     recognition?.stop();
   };
 
+  const reset = () => {
+    prev = "";
+    now = "";
+    setText("");
+  };
+
   return {
     text,
+    reset,
     startListening,
     stopListening,
     isListening,
