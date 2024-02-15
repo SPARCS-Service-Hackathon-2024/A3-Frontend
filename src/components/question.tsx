@@ -70,7 +70,7 @@ export default function Question() {
       onClick={goToNextDialog}
     >
       <img
-        src={isListening ? "/laura/write.gif" : "/laura/default.gif"}
+        src={isListening ? "/bomi/write.gif" : "/bomi/default.gif"}
         className="h-[300px]"
       />
       <div className="h-full break-keep px-8 pt-8 text-center">
