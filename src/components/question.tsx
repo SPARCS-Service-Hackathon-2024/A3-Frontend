@@ -125,6 +125,7 @@ export default function Question() {
               setPlaying={setPlaying}
             />
           </div>
+          {answer}
           <AnimatePresence>
             {dialog.is_answerable && isDialogEnd && !loading && (
               <motion.div

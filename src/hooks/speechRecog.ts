@@ -49,7 +49,11 @@ const useSpeechToText = () => {
     };
 
     recognition.onend = () => {
-      setIsListening(false);
+      if (window.navigator.userAgentData?.mobile ?? false) {
+        recognition.start();
+      } else {
+        setIsListening(false);
+      }
     };
 
     //@ts-expect-error no need to check for recognition
