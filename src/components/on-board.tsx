@@ -13,7 +13,7 @@ export default function OnBoard() {
       {isUserLoading ? (
         <div className="loading text-primary" />
       ) : user ? (
-        <div className="flex w-full flex-col gap-2">
+        <div className="flex w-full flex-col gap-4">
           <a href="/main" className="btn btn-primary btn-lg w-full">
             <FaFeatherAlt />
             {user.last_answered_question_id === 1 ? "시작하기" : "이어하기"}
