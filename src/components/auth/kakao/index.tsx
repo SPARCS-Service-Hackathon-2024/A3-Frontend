@@ -29,6 +29,7 @@ const SocialKakao = () => {
       token={kakaoClientId}
       onSuccess={kakaoOnSuccess}
       onFail={kakaoOnFailure}
+      className="!text-lg font-bold"
     />
   );
 };
