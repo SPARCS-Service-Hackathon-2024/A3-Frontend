@@ -35,6 +35,7 @@ export default function LineSplit({
 
   const handlePlayTTS = useCallback(async () => {
     audio?.pause();
+    setPlaying(false);
     const newAudio = await tts(
       text.replace("%username%", user!.name).replace(/\\n/g, " "),
     );
@@ -51,7 +52,7 @@ export default function LineSplit({
   const mute = useCallback(() => {
     if (!audio) return;
     audio.muted = muted;
-    setPlaying(!muted);
+    setPlaying(!muted && !audio.paused);
   }, [audio, muted]);
 
   useEffect(() => {
