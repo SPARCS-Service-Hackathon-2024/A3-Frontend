@@ -100,10 +100,10 @@ export default function Question() {
                           }
                         : () => startListening()
                     }
-                    className="btn btn-primary btn-lg font-sans-serif btn-circle relative h-32 w-32 text-5xl"
+                    className="font-sans-serif btn btn-circle btn-primary btn-lg relative h-32 w-32 text-5xl"
                   >
                     {isListening && (
-                      <div className="bg-primary/10 animate-recording absolute inset-0 rounded-full" />
+                      <div className="animate-recording absolute inset-0 rounded-full bg-primary/10" />
                     )}
                     {isListening ? (
                       <div className="loading loading-bars" />
@@ -117,13 +117,13 @@ export default function Question() {
             {hasRecordedOnce && ( // Conditionally render the new buttons
               <>
                 <button
-                  className="btn btn-success btn-lg font-sans-serif mb-8 w-full"
+                  className="font-sans-serif btn btn-success btn-lg mb-8 w-full"
                   onClick={goToNextDialog}
                 >
                   기록 되었습니다. 넘어갈까요?
                 </button>
                 <button
-                  className="btn btn-secondary btn-outline btn-lg font-sans-serif mb-8 w-full"
+                  className="font-sans-serif btn btn-outline btn-secondary btn-lg mb-8 w-full"
                   onClick={handleRecordAgain}
                 >
                   다시 기록하기
@@ -137,7 +137,7 @@ export default function Question() {
               직접 입력하기
             </button> */}
             <button
-              className="btn btn-primary btn-outline btn-lg font-sans-serif w-full"
+              className="font-sans-serif btn btn-outline btn-primary btn-lg w-full"
               onClick={() => skipQuestion()}
             >
               이 질문 건너뛰기

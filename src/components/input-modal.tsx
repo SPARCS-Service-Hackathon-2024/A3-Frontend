@@ -29,7 +29,7 @@ export default function InputModal({
             initial={{ y: 64 }}
             animate={{ y: 0, transition: { duration: 0.5 } }}
             exit={{ y: 64, transition: { duration: 0.2 } }}
-            className="bg-base-100 flex w-full max-w-96 flex-col rounded-lg p-8 shadow-xl"
+            className="flex w-full max-w-96 flex-col rounded-lg bg-base-100 p-8 shadow-xl"
           >
             <div className="text-center text-lg font-bold">{questionText}</div>
             <textarea
@@ -48,7 +48,7 @@ export default function InputModal({
               입력 완료
             </button>
             <button
-              className="btn btn-primary btn-outline btn-lg mt-4 w-full"
+              className="btn btn-outline btn-primary btn-lg mt-4 w-full"
               onClick={close}
             >
               취소
