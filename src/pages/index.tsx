@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "../components/layout";
 import Main from "../components/layout/start";
 import Question from "../components/question";
+import UploadImg from "./uploadImg";
 
 function Home() {
 
@@ -13,6 +14,7 @@ function Home() {
 
   return (
     <Layout>
+      <UploadImg />
       {/* Conditional rendering based on login status */}
       { !isLoggedIn ? (
         // Pass handleLoginSuccess as a prop to Main so it can be called on successful login
@@ -22,6 +24,7 @@ function Home() {
           <Question />
         </div>
       )}
+      
     </Layout>
   );
 }
