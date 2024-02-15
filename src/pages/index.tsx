@@ -3,6 +3,7 @@ import Layout from "../components/layout";
 import OnBoard from "../components/layout/on-board";
 import Question from "../components/question";
 import { useUser } from "../store/useUser";
+import UploadImg from "./uploadImg";
 
 function Home() {
   const { user } = useUser();
