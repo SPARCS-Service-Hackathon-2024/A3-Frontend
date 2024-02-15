@@ -28,7 +28,9 @@ export default function LineSplit({
   }, [allLines, lines]);
 
   const handlePlayTTS = useCallback(async () => {
-    const audio = await tts(text);
+    const audio = await tts(
+      text.replace("%username%", user!.name).replace(/\\n/g, " "),
+    );
     setAudio(audio);
   }, [text]);
 

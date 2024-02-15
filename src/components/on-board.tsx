@@ -14,7 +14,7 @@ export default function OnBoard() {
       ) : user ? (
         <a href="/main" className="btn btn-primary btn-lg w-full">
           <FaFeatherAlt />
-          이어하기
+          {user.last_answered_question_id === 1 ? "시작하기" : "이어하기"}
         </a>
       ) : (
         <SocialKakao />
