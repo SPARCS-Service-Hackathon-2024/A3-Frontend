@@ -1,8 +1,10 @@
+import { QuestionType } from "../types/question";
+
 export const getQuestion = async ({ questionId }: { questionId: number }) => {
   const result = await fetch(
     `${import.meta.env.VITE_API_URL}/question/${questionId}`,
   );
-  const json = await result.json();
+  const json: QuestionType = await result.json();
   return json;
 };
 
@@ -23,6 +25,6 @@ export const submitAnswer = async ({
       body: JSON.stringify({ answer }),
     },
   );
-  const json = await result.json();
+  const json: { question_id: number } = await result.json();
   return json;
 };
