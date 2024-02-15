@@ -15,11 +15,8 @@ export default function Main({
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
-      <img
-        src={"/bomi/default.gif"}
-        className="mb-8 h-[300px]"
-        alt="Login Image"
-      />
+      <img src={"/bomi/default.gif"} className="h-[300px]" alt="Login Image" />
+      <h1 className="py-8 text-4xl font-bold">인생 기록</h1>
       <SocialKakao onSuccess={handleKakaoLoginSuccess} />
     </div>
   );
