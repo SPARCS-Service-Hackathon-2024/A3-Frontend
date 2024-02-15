@@ -7,6 +7,6 @@ export const getResult = async ({ token }: { token: string }) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  const json: ResultType = await result.json();
+  const json: ResultType[] = await result.json();
   return json;
 };
