@@ -27,11 +27,11 @@ function UploadImg() {
     <Layout>
       <section className="flex flex-col h-screen items-center justify-start pt-20">
         <div className="text-center mb-6">
-          <p className="text-xl font-semibold mb-1">사진 올리기</p>
-          <p className="text-sm font-normal">최대 5장까지 올릴 수 있습니다</p>
+          <p className="text-4xl font-semibold mb-1">사진 올리기</p>
+          <p className="text-2xl mt-4 font-normal">최대 5장까지 올릴 수 있습니다</p>
         </div>
         <div className="text-lg font-semibold">
-          <label className="cursor-pointer bg-green-50 text-green-700 hover:bg-green-100 py-3 px-5 rounded-full file:cursor-pointer">
+          <label className="text-2xl cursor-pointer bg-green-50 text-green-700 hover:bg-green-100 py-3 px-5 rounded-full file:cursor-pointer">
             파일 선택
             <input
               className="hidden"
@@ -55,7 +55,7 @@ function UploadImg() {
               </p>
             ) : (
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="text-2xl rounded-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 "
                 onClick={() => {
                   console.log(selectedImages);
                 }}
@@ -66,7 +66,7 @@ function UploadImg() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-4 mt-4 w-full px-4">
+        <div className="grid grid-cols-2 gap-4 mt-4 w-full px-6">
           {selectedImages.map((image, index) => (
             <div key={image} className="relative">
               <img src={image} className="h-auto w-full object-cover rounded-lg" alt="upload" />
