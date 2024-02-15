@@ -9,11 +9,13 @@ export default function LineSplit({
   hasNext,
   endDialog,
   hidden,
+  muted,
 }: {
   text: string;
   hasNext: boolean;
   endDialog: () => void;
   hidden: boolean;
+  muted: boolean;
 }) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
@@ -37,6 +39,15 @@ export default function LineSplit({
     newAudio.play();
     setAudio(newAudio);
   }, [text]);
+
+  const mute = useCallback(() => {
+    if (!audio) return;
+    audio.muted = muted;
+  }, [audio, muted]);
+
+  useEffect(() => {
+    mute();
+  }, [muted]);
 
   useEffect(() => {
     handlePlayTTS();

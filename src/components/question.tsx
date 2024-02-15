@@ -90,6 +90,7 @@ export default function Question() {
         dialog?.is_answerable && isDialogEnd && !loading ? "pt-0" : "pt-24",
       ])}
       onClick={() => {
+        if (loading) return;
         if (!dialog?.is_answerable && isDialogEnd) {
           skip();
         }
@@ -101,7 +102,7 @@ export default function Question() {
             ? "/bomi/write.gif"
             : "/bomi/default.gif"
         }
-        className="h-[300px]"
+        className="h-[250px]"
       />
       {dialog && (
         <>
@@ -114,6 +115,7 @@ export default function Question() {
               hasNext={!dialog.is_answerable}
               endDialog={() => setIsDialogEnd(true)}
               hidden={dialog?.is_answerable && loading}
+              muted={isListening}
             />
           </div>
           <AnimatePresence>
