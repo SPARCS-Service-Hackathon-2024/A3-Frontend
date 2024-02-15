@@ -38,7 +38,7 @@ export default function LineSplit({
   }, [audio]);
 
   useEffect(() => {
-    const interval = setInterval(addLine, 10);
+    const interval = setInterval(addLine, 400);
     return () => clearInterval(interval);
   }, [addLine]);
 
@@ -66,7 +66,7 @@ export default function LineSplit({
         {lines.length === allLines.length && hasNext && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { delay: 1 } }}
+            animate={{ opacity: 1, transition: { delay: 0.4 } }}
             exit={{ opacity: 0 }}
             className="mt-4 text-base opacity-40"
           >

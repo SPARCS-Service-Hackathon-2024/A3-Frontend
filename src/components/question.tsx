@@ -6,7 +6,6 @@ import { FaMicrophone } from "react-icons/fa6";
 import cc from "classcat";
 import { AnimatePresence, motion } from "framer-motion";
 import userSpeechRecognition from "../hooks/speechRecog";
-import InputModal from "./input-modal";
 
 export default function Question() {
   const [index, setIndex] = useState(0);
@@ -19,7 +18,6 @@ export default function Question() {
     isListening,
     hasRecognitionSupport,
   } = userSpeechRecognition();
-  const [isTextInputModalOpened, setIsTextInputModalOpened] = useState(false);
   const [hasRecordedOnce, setHasRecordedOnce] = useState(false); //to track if recording has been made
   const [answer, setAnswer] = useState("");
 
@@ -51,9 +49,8 @@ export default function Question() {
 
   const handleStopRecording = () => {
     stopListening();
-    setIsTextInputModalOpened(true);
     setHasRecordedOnce(true); // Set to true when recording is stopped
-    console.log(answer)
+    console.log(answer);
   };
 
   useEffect(() => {
@@ -90,32 +87,39 @@ export default function Question() {
             className="flex h-full w-full flex-col items-center justify-end gap-4 px-12 pb-8"
           >
             <>
-            {hasRecognitionSupport && (
+              {hasRecognitionSupport && (
                 <button
-                  onClick={isListening ? handleStopRecording : handleStartRecording}
-                  className="btn mb-4 mt-8 btn-primary btn-lg font-sans-serif btn-circle relative h-32 w-32 text-5xl"
+                  onClick={
+                    isListening ? handleStopRecording : handleStartRecording
+                  }
+                  className="font-sans-serif btn btn-circle btn-primary btn-lg relative mb-4 mt-8 h-32 w-32 text-5xl"
                 >
-                  {isListening && <div className="bg-primary/10 animate-recording absolute inset-0 rounded-full" />}
-                  {isListening ? <div className="loading loading-bars" /> : <FaMicrophone />}
+                  {isListening && (
+                    <div className="animate-recording absolute inset-0 rounded-full bg-primary/10" />
+                  )}
+                  {isListening ? (
+                    <div className="loading loading-bars" />
+                  ) : (
+                    <FaMicrophone />
+                  )}
                 </button>
               )}
               {hasRecordedOnce && (
                 <>
                   <button
-                    className="btn mb-8 btn-success btn-lg font-sans-serif w-full"
+                    className="font-sans-serif btn btn-success btn-lg mb-8 w-full"
                     onClick={goToNextDialog}
                   >
                     기록 되었습니다. 넘어갈까요?
                   </button>
                   <button
-                    className="btn mb-8 btn-secondary btn-outline btn-lg font-sans-serif w-full"
+                    className="font-sans-serif btn btn-outline btn-secondary btn-lg mb-8 w-full"
                     onClick={handleStartRecording}
                   >
                     다시 기록하기
                   </button>
                 </>
               )}
-
             </>
             <button
               className="font-sans-serif btn btn-outline btn-primary btn-lg w-full"
@@ -126,16 +130,6 @@ export default function Question() {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* <InputModal
-        questionText={dialog.text}
-        isOpened={isTextInputModalOpened}
-        close={() => {
-          setIsTextInputModalOpened(false);
-        }}
-        submit={() => submitAnswer()}
-        answer={answer}
-        setAnswer={setAnswer}
-      /> */}
     </div>
   );
 }

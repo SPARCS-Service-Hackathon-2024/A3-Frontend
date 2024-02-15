@@ -1,26 +1,20 @@
 import { useState } from "react";
 import Layout from "../components/layout";
-import Main from "../components/layout/start";
+import OnBoard from "../components/layout/on-board";
 import Question from "../components/question";
+import { useUser } from "../store/useUser";
 
 function Home() {
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-  };
+  const { user } = useUser();
 
   return (
     <Layout>
-      {/* Conditional rendering based on login status */}
-      { !isLoggedIn ? (
-        // Pass handleLoginSuccess as a prop to Main so it can be called on successful login
-        <Main onLoginSuccess={handleLoginSuccess} />
-      ) : (
+      {user ? (
         <div className="flex h-full w-full flex-col items-center pt-16 text-2xl">
           <Question />
         </div>
+      ) : (
+        <OnBoard />
       )}
     </Layout>
   );

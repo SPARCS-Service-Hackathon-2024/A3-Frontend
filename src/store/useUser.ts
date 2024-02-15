@@ -1,12 +1,12 @@
 import { create } from "zustand";
+import { UserType } from "../types/user";
 
 interface UserState {
-  id: string;
-  name: string;
+  user: UserType | null;
+  setUser: (user: UserType | null) => void;
 }
 
 export const useUser = create<UserState>((set) => ({
-  id: "",
-  name: "",
-  setUser: (id: string, name: string) => set({ id, name }),
+  user: null,
+  setUser: (user) => set({ user }),
 }));
