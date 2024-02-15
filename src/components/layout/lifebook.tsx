@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 //create life book, get recorded text and put into input
+
 export default function Lifebook() {
   const [text, setText] = useState(""); //text should contain both question and recorded text
   const [result, setResult] = useState("");
