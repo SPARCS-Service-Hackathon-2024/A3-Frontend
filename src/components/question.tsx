@@ -18,9 +18,9 @@ export default function Question() {
     startListening,
     stopListening,
     isListening,
+    hasRecordedOnce,
     hasRecognitionSupport,
   } = useSpeechRecognition();
-  const [hasRecordedOnce, setHasRecordedOnce] = useState(false); //to track if recording has been made
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -69,12 +69,10 @@ export default function Question() {
 
   const handleStartRecording = () => {
     startListening();
-    setHasRecordedOnce(false);
   };
 
   const handleStopRecording = () => {
     stopListening();
-    setHasRecordedOnce(true);
     console.log(answer);
   };
 
