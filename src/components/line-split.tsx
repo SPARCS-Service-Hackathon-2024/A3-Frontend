@@ -29,8 +29,13 @@ export default function LineSplit({
     const newAudio = await tts(text);
     if (audio) audio.pause();
     setAudio(newAudio);
-    newAudio.play();
   }, [audio, text]);
+
+  useEffect(() => {
+    if (audio) {
+      audio.play();
+    }
+  }, [audio]);
 
   useEffect(() => {
     const interval = setInterval(addLine, 10);
