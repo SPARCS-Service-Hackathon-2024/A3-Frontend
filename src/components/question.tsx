@@ -106,10 +106,13 @@ export default function Question() {
       />
       {dialog && (
         <>
-          <div className="px-8 pt-8 text-center">
-            {dialog?.is_answerable && loading && (
-              <div className="text-center">말씀하신 내용을 적고 있어요.</div>
-            )}
+          <div className="flex justify-center px-8 pt-8 text-center">
+            {loading &&
+              (dialog?.is_answerable ? (
+                <div className="text-center">말씀하신 내용을 적고 있어요.</div>
+              ) : (
+                <div className="loading loading-md" />
+              ))}
             <LineSplit
               text={dialog.content}
               hasNext={!dialog.is_answerable}
