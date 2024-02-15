@@ -87,7 +87,7 @@ export default function Question() {
     <div
       className={cc([
         "flex h-full flex-col items-center overflow-hidden transition-all duration-500",
-        dialog?.is_answerable && isDialogEnd ? "pt-0" : "pt-24",
+        dialog?.is_answerable && isDialogEnd && !loading ? "pt-0" : "pt-24",
       ])}
       onClick={() => {
         if (!dialog?.is_answerable && isDialogEnd) {
@@ -101,11 +101,9 @@ export default function Question() {
       />
       {dialog && (
         <>
-          <div className="shrink break-keep px-8 pt-8 text-center">
+          <div className="shrink px-8 pt-8 text-center">
             {loading ? (
-              <div className="text-center text-base">
-                말씀하신 내용을 적고 있어요.
-              </div>
+              <div className="text-center">말씀하신 내용을 적고 있어요.</div>
             ) : (
               <LineSplit
                 text={dialog.content}
@@ -115,7 +113,7 @@ export default function Question() {
             )}
           </div>
           <AnimatePresence>
-            {dialog.is_answerable && isDialogEnd && (
+            {dialog.is_answerable && isDialogEnd && !loading && (
               <motion.div
                 initial={{ opacity: 0, y: 100 }}
                 animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
@@ -136,14 +134,12 @@ export default function Question() {
                       )}
                       {isListening ? (
                         <div className="loading loading-bars" />
-                      ) : loading ? (
-                        <div className="loading loading-bars" />
                       ) : (
                         <FaMicrophone />
                       )}
                     </button>
                   )}
-                  {hasRecordedOnce && !loading && (
+                  {hasRecordedOnce && (
                     <>
                       <button
                         className="font-sans-serif btn btn-primary w-full text-lg"
@@ -160,7 +156,7 @@ export default function Question() {
                     </>
                   )}
                 </>
-                {!isListening && !loading && (
+                {!isListening && (
                   <button
                     className="font-sans-serif btn btn-outline btn-primary w-full text-lg"
                     onClick={() => skip()}

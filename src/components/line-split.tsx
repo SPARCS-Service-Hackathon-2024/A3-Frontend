@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { tts } from "../libs/tts";
 import { useUser } from "../store/useUser";
-import debounce from "lodash.debounce";
+import throttle from "lodash.throttle";
 
 export default function LineSplit({
   text,
@@ -15,6 +15,7 @@ export default function LineSplit({
 }) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
   const { user } = useUser();
 
@@ -26,19 +27,20 @@ export default function LineSplit({
     }
   }, [allLines, lines]);
 
-  const playTTS = useCallback(
-    () =>
-      debounce(async () => {
-        if (!user || !text) return;
-        const audio = await tts(text.replace("%username%", user!.name));
-        audio.play();
-      }, 100),
-    [text],
-  );
+  const handlePlayTTS = useCallback(async () => {
+    const audio = await tts(text);
+    setAudio(audio);
+  }, [text]);
 
   useEffect(() => {
-    playTTS();
-  }, [playTTS]);
+    if (audio) {
+      audio.play();
+    }
+  }, [audio]);
+
+  useEffect(() => {
+    handlePlayTTS();
+  }, [handlePlayTTS]);
 
   useEffect(() => {
     const interval = setInterval(addLine, 400);

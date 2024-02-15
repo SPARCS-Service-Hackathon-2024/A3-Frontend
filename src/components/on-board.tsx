@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useState } from "react";
 import SocialKakao from "./auth/kakao";
 import { useUser } from "../store/useUser";
 import { FaFeatherAlt } from "react-icons/fa";
