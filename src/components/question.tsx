@@ -163,12 +163,6 @@ export default function Question() {
                       >
                         확인
                       </button>
-                      <button
-                        className="font-sans-serif btn btn-outline btn-secondary w-full text-lg"
-                        onClick={handleStartRecording}
-                      >
-                        다시 기록하기
-                      </button>
                     </>
                   )}
                 </>

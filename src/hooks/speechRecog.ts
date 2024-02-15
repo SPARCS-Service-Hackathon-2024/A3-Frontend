@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 declare global {
   interface Window {
@@ -14,59 +14,54 @@ declare global {
   }
 }
 
-let recognition: SpeechRecognition | null = null;
-
-if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SpeechRecognition();
-  recognition.interimResults = true;
-  recognition.lang = "ko-KR"; // Adjust the language as needed
-  // recognition.continuous = true;
-
-  // Detect if the app is loaded on a mobile device
-  const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
-
-  // Set the continuous flag based on the device type
-  recognition.continuous = !isMobileDevice;
-}
-
-let prev = "",
-  now = "";
-
 const useSpeechToText = () => {
   const [text, setText] = useState<string>("");
   const [isListening, setIsListening] = useState<boolean>(false);
 
+  const [recognition] = useState(
+    window.SpeechRecognition || window.webkitSpeechRecognition
+      ? new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+      : null,
+  );
+
+  const onResult = useCallback((event: SpeechRecognitionEvent) => {
+    const transcript = Array.from(event.results)
+      .map((result) => result[0].transcript)
+      .join("");
+    setText(transcript);
+  }, []);
+
+  const onEnd = useCallback(() => {
+    if (window.navigator.userAgentData?.mobile) {
+      recognition?.start();
+    }
+  }, [recognition]);
+
+  const onError = useCallback((event: SpeechRecognitionErrorEvent) => {
+    console.error("Speech recognition error:", event.error);
+    setIsListening(false);
+  }, []);
+
   useEffect(() => {
     if (!recognition) return;
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const transcript = Array.from(event.results)
-        .map((result) => result[0].transcript)
-        .join("");
-      now = transcript;
-    };
+    recognition.interimResults = true;
+    recognition.lang = "ko-KR";
 
-    recognition.onend = () => {
-      prev = prev + now;
-      setText(prev);
-      if (window.navigator.userAgentData?.mobile ?? false) {
-        recognition.start();
-      } else {
-        setIsListening(false);
-      }
-    };
+    const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
+    recognition.continuous = !isMobileDevice;
 
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.error("Speech recognition error:", event.error);
-      setIsListening(false);
-    };
+    recognition.addEventListener("result", onResult);
+    recognition.addEventListener("end", onEnd);
+    recognition.addEventListener("error", onError);
 
     return () => {
       recognition.stop();
+      recognition.removeEventListener("result", onResult);
+      recognition.removeEventListener("end", onEnd);
+      recognition.removeEventListener("error", onError);
     };
-  }, []);
+  }, [text, onEnd, recognition, onResult, onError]);
 
   const startListening = () => {
     setIsListening(true);
@@ -79,8 +74,6 @@ const useSpeechToText = () => {
   };
 
   const reset = () => {
-    prev = "";
-    now = "";
     setText("");
   };
 
