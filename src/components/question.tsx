@@ -3,7 +3,7 @@ import LineSplit from "./line-split";
 import { FaMicrophone } from "react-icons/fa6";
 import cc from "classcat";
 import { AnimatePresence, motion } from "framer-motion";
-import userSpeechRecognition from "../hooks/speechRecog";
+import useSpeechRecognition from "../hooks/speechRecog";
 import { QuestionType } from "../types/question";
 import { useUser } from "../store/useUser";
 import { getQuestion, skipQuestion, submitAnswer } from "../apis/question";
@@ -15,12 +15,11 @@ export default function Question() {
   const [isDialogEnd, setIsDialogEnd] = useState(false);
   const {
     text,
-    reset,
     startListening,
     stopListening,
     isListening,
     hasRecognitionSupport,
-  } = userSpeechRecognition();
+  } = useSpeechRecognition();
   const [hasRecordedOnce, setHasRecordedOnce] = useState(false); //to track if recording has been made
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
@@ -69,7 +68,6 @@ export default function Question() {
   };
 
   const handleStartRecording = () => {
-    reset();
     startListening();
     setHasRecordedOnce(false);
   };
