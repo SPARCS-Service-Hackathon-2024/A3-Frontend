@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+//@ts-expect-error no type definition
+import { useSpeechSynthesis } from "react-speech-kit";
+import { tts } from "../libs/tts";
 
 export default function LineSplit({
   text,
@@ -12,6 +15,7 @@ export default function LineSplit({
 }) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
   const addLine = useCallback(() => {
     if (allLines.length > lines.length) {
@@ -21,6 +25,13 @@ export default function LineSplit({
     }
   }, [allLines, lines]);
 
+  const playTTS = useCallback(async () => {
+    const newAudio = await tts(text);
+    if (audio) audio.pause();
+    setAudio(newAudio);
+    newAudio.play();
+  }, [audio, text]);
+
   useEffect(() => {
     const interval = setInterval(addLine, 10);
     return () => clearInterval(interval);
@@ -29,6 +40,7 @@ export default function LineSplit({
   useEffect(() => {
     setAllLines(text.split("\n"));
     setLines([]);
+    playTTS();
   }, [text]);
 
   return (
