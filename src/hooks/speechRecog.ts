@@ -29,7 +29,6 @@ const useSpeechToText = () => {
     //@ts-expect-error no need to check for recognition
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = Array.from(event.results)
-        //@ts-expect-error no need to check for event.results
         .map((result) => result[0].transcript)
         .join("");
       setText(transcript);

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-//@ts-expect-error no type definition
-import { useSpeechSynthesis } from "react-speech-kit";
 import { tts } from "../libs/tts";
+import { useUser } from "../store/useUser";
+import debounce from "lodash.debounce";
 
 export default function LineSplit({
   text,
@@ -15,7 +15,8 @@ export default function LineSplit({
 }) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+
+  const { user } = useUser();
 
   const addLine = useCallback(() => {
     if (allLines.length > lines.length) {
@@ -25,17 +26,19 @@ export default function LineSplit({
     }
   }, [allLines, lines]);
 
-  const playTTS = useCallback(async () => {
-    const newAudio = await tts(text);
-    if (audio) audio.pause();
-    setAudio(newAudio);
-  }, [audio, text]);
+  const playTTS = useCallback(
+    () =>
+      debounce(async () => {
+        if (!user || !text) return;
+        const audio = await tts(text.replace("%username%", user!.name));
+        audio.play();
+      }, 100),
+    [text],
+  );
 
   useEffect(() => {
-    if (audio) {
-      audio.play();
-    }
-  }, [audio]);
+    playTTS();
+  }, [playTTS]);
 
   useEffect(() => {
     const interval = setInterval(addLine, 400);
@@ -43,9 +46,8 @@ export default function LineSplit({
   }, [addLine]);
 
   useEffect(() => {
-    setAllLines(text.split("\n"));
+    setAllLines(text.split("\\n"));
     setLines([]);
-    playTTS();
   }, [text]);
 
   return (
@@ -59,8 +61,8 @@ export default function LineSplit({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            {line}
-            {index !== text.split("\n").length - 1 && <br />}
+            {line.replace("%username%", user!.name)}
+            {index !== text.split("\\n").length - 1 && <br />}
           </motion.div>
         ))}
         {lines.length === allLines.length && hasNext && (

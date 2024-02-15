@@ -38,7 +38,7 @@ export const submitAnswer = async ({
         Authorization: `Bearer ${token}`,
       },
       credentials: "include",
-      body: JSON.stringify({ answer }),
+      body: JSON.stringify({ content: answer }),
     },
   );
   const json: { question_id: number } = await result.json();

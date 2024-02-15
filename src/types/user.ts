@@ -1,9 +1,8 @@
 export interface UserType {
-  name: string;
-  birthday: string | null;
-  address: string | null;
-  kakao_id: number;
   user_id: number;
+  name: string;
+  address: string | null;
   call: string | null;
-  created_at: string;
+  last_answered_question_id: number;
+  access_token: string;
 }
