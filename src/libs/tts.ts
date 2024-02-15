@@ -11,7 +11,7 @@ export const tts = async (text: string) => {
     await (
       await openai.audio.speech.create({
         model: "tts-1",
-        voice: "shimmer",
+        voice: "nova",
         input: text,
       })
     ).arrayBuffer(),
