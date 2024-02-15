@@ -44,7 +44,6 @@ export default function Question() {
     setIndex(index + 1);
   };
 
-
   const handleRecordingDone = () => {
     setHasRecordedOnce(true); // Update the state to show the buttons
   };
@@ -70,7 +69,10 @@ export default function Question() {
       ])}
       onClick={goToNextDialog}
     >
-      <img src="/laura/default.gif" className="h-[300px]" />
+      <img
+        src={isListening ? "/laura/write.gif" : "/laura/default.gif"}
+        className="h-[300px]"
+      />
       <div className="h-full break-keep px-8 pt-8 text-center">
         <LineSplit
           text={dialog.text}
@@ -113,21 +115,21 @@ export default function Question() {
               )}
             </>
             {hasRecordedOnce && ( // Conditionally render the new buttons
-                <>
-                  <button
-                    className="btn mb-8 btn-success btn-lg font-sans-serif w-full"
-                    onClick={goToNextDialog}
-                  >
-                    기록 되었습니다. 넘어갈까요?
-                  </button>
-                  <button
-                    className="btn mb-8 btn-secondary btn-outline btn-lg font-sans-serif w-full"
-                    onClick={handleRecordAgain}
-                  >
-                    다시 기록하기
-                  </button>
-                </>
-              )}
+              <>
+                <button
+                  className="btn btn-success btn-lg font-sans-serif mb-8 w-full"
+                  onClick={goToNextDialog}
+                >
+                  기록 되었습니다. 넘어갈까요?
+                </button>
+                <button
+                  className="btn btn-secondary btn-outline btn-lg font-sans-serif mb-8 w-full"
+                  onClick={handleRecordAgain}
+                >
+                  다시 기록하기
+                </button>
+              </>
+            )}
             {/* <button
               className="btn btn-primary btn-lg font-sans-serif w-full"
               onClick={() => setIsTextInputModalOpened(true)}
