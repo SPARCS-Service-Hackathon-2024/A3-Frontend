@@ -20,7 +20,7 @@ export default function Question() {
     hasRecognitionSupport,
   } = userSpeechRecognition();
   const [isTextInputModalOpened, setIsTextInputModalOpened] = useState(false);
-
+  const [hasRecordedOnce, setHasRecordedOnce] = useState(false); //to track if recording has been made
   const [answer, setAnswer] = useState("");
 
   useEffect(() => {
@@ -44,9 +44,21 @@ export default function Question() {
     setIndex(index + 1);
   };
 
+
+  const handleRecordingDone = () => {
+    setHasRecordedOnce(true); // Update the state to show the buttons
+  };
+
+  const handleRecordAgain = () => {
+    // Implement the logic to start recording again
+    startListening();
+    setHasRecordedOnce(false); // Optional: Hide buttons until recording is done again
+  };
+
   useEffect(() => {
     if (text) {
       setAnswer(text);
+      handleRecordingDone();
     }
   }, [text]);
 
@@ -100,12 +112,28 @@ export default function Question() {
                 </>
               )}
             </>
-            <button
+            {hasRecordedOnce && ( // Conditionally render the new buttons
+                <>
+                  <button
+                    className="btn mb-8 btn-success btn-lg font-sans-serif w-full"
+                    onClick={goToNextDialog}
+                  >
+                    기록 되었습니다. 넘어갈까요?
+                  </button>
+                  <button
+                    className="btn mb-8 btn-secondary btn-outline btn-lg font-sans-serif w-full"
+                    onClick={handleRecordAgain}
+                  >
+                    다시 기록하기
+                  </button>
+                </>
+              )}
+            {/* <button
               className="btn btn-primary btn-lg font-sans-serif w-full"
               onClick={() => setIsTextInputModalOpened(true)}
             >
               직접 입력하기
-            </button>
+            </button> */}
             <button
               className="btn btn-primary btn-outline btn-lg font-sans-serif w-full"
               onClick={() => skipQuestion()}
@@ -115,7 +143,7 @@ export default function Question() {
           </motion.div>
         )}
       </AnimatePresence>
-      <InputModal
+      {/* <InputModal
         questionText={dialog.text}
         isOpened={isTextInputModalOpened}
         close={() => {
@@ -124,7 +152,7 @@ export default function Question() {
         submit={() => submitAnswer()}
         answer={answer}
         setAnswer={setAnswer}
-      />
+      /> */}
     </div>
   );
 }
