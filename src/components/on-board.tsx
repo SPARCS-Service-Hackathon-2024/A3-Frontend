@@ -1,10 +1,12 @@
 import SocialKakao from "./auth/kakao";
 import { useUser } from "../store/useUser";
-import { FaFeatherAlt } from "react-icons/fa";
+import { FaFeatherAlt, FaSignOutAlt } from "react-icons/fa";
 import { FaBook } from "react-icons/fa6";
+import useAuth from "../hooks/useAuth";
 
 export default function OnBoard() {
   const { user, isUserLoading } = useUser();
+  const { signOut } = useAuth();
 
   return (
     <div className="flex h-screen flex-col items-center justify-center px-8">
@@ -28,6 +30,19 @@ export default function OnBoard() {
         </div>
       ) : (
         <SocialKakao />
+      )}
+      {user && (
+        <div className="absolute inset-x-0 bottom-8 flex justify-center gap-8">
+          <button
+            className="btn btn-ghost btn-sm"
+            onClick={() => {
+              signOut();
+            }}
+          >
+            <FaSignOutAlt />
+            로그아웃
+          </button>
+        </div>
       )}
     </div>
   );

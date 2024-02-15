@@ -5,6 +5,11 @@ import { useUser } from "../store/useUser";
 export default function useAuth() {
   const { setUser, setIsUserLoading } = useUser();
 
+  const signOut = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem("token");
+  }, [setUser]);
+
   const handleLogin = useCallback(
     async (token: string) => {
       setIsUserLoading(true);
@@ -36,5 +41,6 @@ export default function useAuth() {
   return {
     handleLogin,
     checkToken,
+    signOut,
   };
 }
