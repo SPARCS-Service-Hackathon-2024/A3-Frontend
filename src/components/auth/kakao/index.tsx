@@ -21,7 +21,7 @@ const SocialKakao = () => {
       token={kakaoClientId}
       onSuccess={kakaoOnSuccess}
       onFail={kakaoOnFailure}
-      className="btn btn-lg !w-full font-bold"
+      className="btn btn-lg !w-full !text-lg font-bold"
     />
   );
 };
