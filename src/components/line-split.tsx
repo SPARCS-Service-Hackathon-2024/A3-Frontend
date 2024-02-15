@@ -2,16 +2,18 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { tts } from "../libs/tts";
 import { useUser } from "../store/useUser";
-import throttle from "lodash.throttle";
+import cc from "classcat";
 
 export default function LineSplit({
   text,
   hasNext,
   endDialog,
+  hidden,
 }: {
   text: string;
   hasNext: boolean;
   endDialog: () => void;
+  hidden: boolean;
 }) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
@@ -28,17 +30,14 @@ export default function LineSplit({
   }, [allLines, lines]);
 
   const handlePlayTTS = useCallback(async () => {
-    const audio = await tts(
+    audio?.pause();
+    alert(text);
+    const newAudio = await tts(
       text.replace("%username%", user!.name).replace(/\\n/g, " "),
     );
-    setAudio(audio);
+    newAudio.play();
+    setAudio(newAudio);
   }, [text]);
-
-  useEffect(() => {
-    if (audio) {
-      audio.play();
-    }
-  }, [audio]);
 
   useEffect(() => {
     handlePlayTTS();
@@ -50,12 +49,13 @@ export default function LineSplit({
   }, [addLine]);
 
   useEffect(() => {
+    if (!text) return;
     setAllLines(text.split("\\n"));
     setLines([]);
   }, [text]);
 
   return (
-    <div className="line-split">
+    <div className={cc(["line-split", hidden && "hidden"])}>
       <AnimatePresence>
         {lines.map((line, index) => (
           <motion.div

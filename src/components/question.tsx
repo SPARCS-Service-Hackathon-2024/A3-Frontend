@@ -105,16 +105,16 @@ export default function Question() {
       />
       {dialog && (
         <>
-          <div className="shrink px-8 pt-8 text-center">
-            {dialog?.is_answerable && loading ? (
+          <div className="px-8 pt-8 text-center">
+            {dialog?.is_answerable && loading && (
               <div className="text-center">말씀하신 내용을 적고 있어요.</div>
-            ) : (
-              <LineSplit
-                text={dialog.content}
-                hasNext={!dialog.is_answerable}
-                endDialog={() => setIsDialogEnd(true)}
-              />
             )}
+            <LineSplit
+              text={dialog.content}
+              hasNext={!dialog.is_answerable}
+              endDialog={() => setIsDialogEnd(true)}
+              hidden={dialog?.is_answerable && loading}
+            />
           </div>
           <AnimatePresence>
             {dialog.is_answerable && isDialogEnd && !loading && (
