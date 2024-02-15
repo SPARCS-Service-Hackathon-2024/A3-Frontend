@@ -10,12 +10,14 @@ export default function LineSplit({
   endDialog,
   hidden,
   muted,
+  setPlaying,
 }: {
   text: string;
   hasNext: boolean;
   endDialog: () => void;
   hidden: boolean;
   muted: boolean;
+  setPlaying: (playing: boolean) => void;
 }) {
   const [allLines, setAllLines] = useState<string[]>([]);
   const [lines, setLines] = useState<string[]>([]);
@@ -37,12 +39,19 @@ export default function LineSplit({
       text.replace("%username%", user!.name).replace(/\\n/g, " "),
     );
     newAudio.play();
+    newAudio.onplay = () => {
+      setPlaying(true);
+    };
+    newAudio.onpause = () => {
+      setPlaying(false);
+    };
     setAudio(newAudio);
   }, [text]);
 
   const mute = useCallback(() => {
     if (!audio) return;
     audio.muted = muted;
+    setPlaying(!muted);
   }, [audio, muted]);
 
   useEffect(() => {

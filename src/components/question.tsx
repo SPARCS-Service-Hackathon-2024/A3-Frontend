@@ -23,6 +23,7 @@ export default function Question() {
   const [hasRecordedOnce, setHasRecordedOnce] = useState(false); //to track if recording has been made
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
+  const [playing, setPlaying] = useState(false);
 
   const fetchQuestion = useCallback(async () => {
     if (!user) return;
@@ -100,7 +101,9 @@ export default function Question() {
         src={
           isListening || (dialog?.is_answerable && loading)
             ? "/bomi/write.gif"
-            : "/bomi/default.gif"
+            : playing
+              ? "/bomi/speak.gif"
+              : "/bomi/default.gif"
         }
         className="h-[250px]"
       />
@@ -119,6 +122,7 @@ export default function Question() {
               endDialog={() => setIsDialogEnd(true)}
               hidden={dialog?.is_answerable && loading}
               muted={isListening}
+              setPlaying={setPlaying}
             />
           </div>
           <AnimatePresence>

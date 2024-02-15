@@ -13,6 +13,7 @@ function splitTextIntoChunks(text: string) {
 
 export default function Main() {
   const { user } = useUser();
+
   const output = [
     { speaker: "ai", text: "가장 기억에 남는 일은 무엇인가요?" },
     {
