@@ -5,14 +5,22 @@ import { DialogType } from "../dialog";
 import { FaMicrophone } from "react-icons/fa6";
 import cc from "classcat";
 import { AnimatePresence, motion } from "framer-motion";
+import userSpeechRecognition from "../hooks/speechRecog";
 import InputModal from "./input-modal";
 
 export default function Question() {
   const [index, setIndex] = useState(0);
   const [dialog, setDialog] = useState<DialogType>(script[0]);
   const [isDialogEnd, setIsDialogEnd] = useState(false);
+  const {
+    text,
+    startListening,
+    stopListening,
+    isListening,
+    hasRecognitionSupport,
+  } = userSpeechRecognition();
   const [isTextInputModalOpened, setIsTextInputModalOpened] = useState(false);
-
+  const [hasRecordedOnce, setHasRecordedOnce] = useState(false); //to track if recording has been made
   const [answer, setAnswer] = useState("");
 
   useEffect(() => {
@@ -36,6 +44,23 @@ export default function Question() {
     setIndex(index + 1);
   };
 
+  const handleRecordingDone = () => {
+    setHasRecordedOnce(true); // Update the state to show the buttons
+  };
+
+  const handleRecordAgain = () => {
+    // Implement the logic to start recording again
+    startListening();
+    setHasRecordedOnce(false); // Optional: Hide buttons until recording is done again
+  };
+
+  useEffect(() => {
+    if (text) {
+      setAnswer(text);
+      handleRecordingDone();
+    }
+  }, [text]);
+
   return (
     <div
       className={cc([
@@ -44,7 +69,10 @@ export default function Question() {
       ])}
       onClick={goToNextDialog}
     >
-      <img src="/laura/default.gif" className="h-[300px]" />
+      <img
+        src={isListening ? "/bomi/write.gif" : "/bomi/default.gif"}
+        className="h-[300px]"
+      />
       <div className="h-full break-keep px-8 pt-8 text-center">
         <LineSplit
           text={dialog.text}
@@ -60,17 +88,56 @@ export default function Question() {
             exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
             className="flex h-full w-full flex-col items-center justify-end gap-4 px-12 pb-8"
           >
-            <button className="btn btn-primary btn-lg btn-circle h-32 w-32 shrink-0 text-5xl">
-              <FaMicrophone />
-            </button>
-            <button
+            <>
+              {hasRecognitionSupport && (
+                <>
+                  <button
+                    onClick={
+                      isListening
+                        ? () => {
+                            stopListening();
+                            setIsTextInputModalOpened(true);
+                          }
+                        : () => startListening()
+                    }
+                    className="font-sans-serif btn btn-circle btn-primary btn-lg relative h-32 w-32 text-5xl"
+                  >
+                    {isListening && (
+                      <div className="animate-recording absolute inset-0 rounded-full bg-primary/10" />
+                    )}
+                    {isListening ? (
+                      <div className="loading loading-bars" />
+                    ) : (
+                      <FaMicrophone />
+                    )}
+                  </button>
+                </>
+              )}
+            </>
+            {hasRecordedOnce && ( // Conditionally render the new buttons
+              <>
+                <button
+                  className="font-sans-serif btn btn-success btn-lg mb-8 w-full"
+                  onClick={goToNextDialog}
+                >
+                  기록 되었습니다. 넘어갈까요?
+                </button>
+                <button
+                  className="font-sans-serif btn btn-outline btn-secondary btn-lg mb-8 w-full"
+                  onClick={handleRecordAgain}
+                >
+                  다시 기록하기
+                </button>
+              </>
+            )}
+            {/* <button
               className="btn btn-primary btn-lg font-sans-serif w-full"
               onClick={() => setIsTextInputModalOpened(true)}
             >
               직접 입력하기
-            </button>
+            </button> */}
             <button
-              className="btn btn-primary btn-outline btn-lg font-sans-serif w-full"
+              className="font-sans-serif btn btn-outline btn-primary btn-lg w-full"
               onClick={() => skipQuestion()}
             >
               이 질문 건너뛰기
@@ -78,7 +145,7 @@ export default function Question() {
           </motion.div>
         )}
       </AnimatePresence>
-      <InputModal
+      {/* <InputModal
         questionText={dialog.text}
         isOpened={isTextInputModalOpened}
         close={() => {
@@ -87,7 +154,7 @@ export default function Question() {
         submit={() => submitAnswer()}
         answer={answer}
         setAnswer={setAnswer}
-      />
+      /> */}
     </div>
   );
 }
