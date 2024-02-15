@@ -15,6 +15,7 @@ export default function Question() {
   const [isDialogEnd, setIsDialogEnd] = useState(false);
   const {
     text,
+    reset,
     startListening,
     stopListening,
     isListening,
@@ -68,6 +69,7 @@ export default function Question() {
   };
 
   const handleStartRecording = () => {
+    reset();
     startListening();
     setHasRecordedOnce(false);
   };
