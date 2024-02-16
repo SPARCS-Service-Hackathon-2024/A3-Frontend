@@ -124,9 +124,6 @@ export default function Question() {
               />
             )}
           </div>
-          <small>
-            {prevAnswer + (prevAnswer && answer ? " " : "") + answer}
-          </small>
           <AnimatePresence>
             {dialog.is_answerable && isDialogEnd && !loading && (
               <motion.div
