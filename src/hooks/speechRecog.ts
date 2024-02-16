@@ -90,7 +90,6 @@ const useSpeechToText = () => {
     hasRecordedOnce,
     isListening,
     hasRecognitionSupport: !!recognition,
-    reset,
   };
 };
 
