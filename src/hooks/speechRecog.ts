@@ -78,6 +78,11 @@ const useSpeechToText = () => {
     recognition?.stop();
   };
 
+  const reset = () => {
+    setText("");
+    setHasRecordedOnce(false);
+  };
+
   return {
     text,
     startListening,
@@ -85,6 +90,7 @@ const useSpeechToText = () => {
     hasRecordedOnce,
     isListening,
     hasRecognitionSupport: !!recognition,
+    reset,
   };
 };
 

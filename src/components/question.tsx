@@ -9,12 +9,13 @@ import { useUser } from "../store/useUser";
 import { getQuestion, skipQuestion, submitAnswer } from "../apis/question";
 
 export default function Question() {
-  const { user, updateNextQuestionId } = useUser();
+  const { user, setUser, updateNextQuestionId } = useUser();
   const [index, setIndex] = useState(user.last_answered_question_id || 1);
   const [dialog, setDialog] = useState<QuestionType>();
   const [isDialogEnd, setIsDialogEnd] = useState(false);
   const {
     text,
+    reset,
     startListening,
     stopListening,
     isListening,
