@@ -124,7 +124,7 @@ export default function Question() {
       />
       {dialog && (
         <>
-          <div className="flex h-full justify-center px-8 pt-8 text-center">
+          <div className="flex h-full items-start justify-center px-8 pt-8 text-center">
             {loading &&
               (dialog.is_answerable && answer ? (
                 <div className="text-center">말씀하신 내용을 적고 있어요.</div>
