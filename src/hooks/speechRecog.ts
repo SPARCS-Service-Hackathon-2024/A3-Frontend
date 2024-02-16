@@ -32,6 +32,7 @@ if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
 const useSpeechToText = () => {
   const [text, setText] = useState<string>("");
   const [isListening, setIsListening] = useState<boolean>(false);
+  const [hasRecordedOnce, setHasRecordedOnce] = useState(false);
 
   useEffect(() => {
     if (!recognition) return;
@@ -47,6 +48,7 @@ const useSpeechToText = () => {
     };
 
     recognition.onend = () => {
+      setHasRecordedOnce(true);
       setIsListening(false);
     };
 
@@ -75,6 +77,7 @@ const useSpeechToText = () => {
     text,
     startListening,
     stopListening,
+    hasRecordedOnce,
     isListening,
     hasRecognitionSupport: !!recognition,
   };
