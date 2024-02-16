@@ -15,13 +15,14 @@ export default function Question() {
   const [isDialogEnd, setIsDialogEnd] = useState(false);
   const {
     text,
+    reset,
     startListening,
     stopListening,
     isListening,
-    hasRecordedOnce,
     hasRecognitionSupport,
   } = useSpeechRecognition();
   const [answer, setAnswer] = useState("");
+  const [prevAnswer, setPrevAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
 
@@ -34,7 +35,9 @@ export default function Question() {
     });
     setDialog(data);
     setLoading(false);
-  }, [index, user]);
+    reset(); // Reset the speech recognition to clear any previous text
+    setPrevAnswer(""); // Clear previous answers when a new question is loaded
+  }, [index, user, reset]);
 
   useEffect(() => {
     fetchQuestion();
@@ -51,36 +54,40 @@ export default function Question() {
     setIndex(next.question_id);
     updateNextQuestionId(next.question_id);
     setLoading(false);
-  }, [index, user, setUser]);
+  }, [index, user]);
 
   const submit = async () => {
     if (!user) return;
     setLoading(true);
     const next = await submitAnswer({
       questionId: index,
-      answer,
+      answer: prevAnswer + (prevAnswer && answer ? " " : "") + answer, // Combine prev and current answers
       token: user.access_token,
     });
     setLoading(false);
     setAnswer("");
+    setPrevAnswer(""); // Clear after submission
     setIndex(next.question_id);
     updateNextQuestionId(next.question_id);
   };
 
-  const handleStartRecording = () => {
-    startListening();
+  const toggleRecording = () => {
+    if (isListening) {
+      stopListening();
+      setPrevAnswer((prev) => prev + (prev && text ? " " : "") + text); // Append new text to prevAnswer
+      setAnswer(""); // Clear current answer ready for new input
+    } else {
+      startListening();
+    }
   };
 
-  const handleStopRecording = () => {
-    stopListening();
-    console.log(answer);
-  };
+
 
   useEffect(() => {
-    if (text) {
+    if (text && isListening) {
       setAnswer(text);
     }
-  }, [text]);
+  }, [text, isListening]);
 
   return (
     <div
@@ -108,22 +115,20 @@ export default function Question() {
       {dialog && (
         <>
           <div className="flex justify-center px-8 pt-8 text-center">
-            {loading &&
-              (dialog?.is_answerable ? (
-                <div className="text-center">말씀하신 내용을 적고 있어요.</div>
-              ) : (
-                <div className="loading loading-md" />
-              ))}
-            <LineSplit
-              text={dialog.content}
-              hasNext={!dialog.is_answerable}
-              endDialog={() => setIsDialogEnd(true)}
-              hidden={dialog?.is_answerable && loading}
-              muted={isListening}
-              setPlaying={setPlaying}
-            />
+            {loading ? (
+              <div className="text-center">말씀하신 내용을 적고 있어요.</div>
+            ) : (
+              <LineSplit
+                text={dialog.content}
+                hasNext={!dialog.is_answerable}
+                endDialog={() => setIsDialogEnd(true)}
+                hidden={dialog?.is_answerable && loading}
+                muted={isListening}
+                setPlaying={setPlaying}
+              />
+            )}
           </div>
-          {answer}
+          {prevAnswer + (prevAnswer && answer ? " " : "") + answer}
           <AnimatePresence>
             {dialog.is_answerable && isDialogEnd && !loading && (
               <motion.div
@@ -135,38 +140,23 @@ export default function Question() {
                 <>
                   {hasRecognitionSupport && (
                     <button
-                      onClick={
-                        isListening ? handleStopRecording : handleStartRecording
-                      }
+                      onClick={toggleRecording}
                       disabled={loading}
                       className="font-sans-serif btn btn-circle btn-primary btn-lg relative mb-4 mt-8 h-32 w-32 text-5xl"
                     >
-                      {isListening && (
-                        <div className="animate-recording absolute inset-0 rounded-full bg-primary/10" />
-                      )}
                       {isListening ? (
-                        <div className="loading loading-bars" />
+                        <div className="animate-recording absolute inset-0 rounded-full bg-primary/10" />
                       ) : (
                         <FaMicrophone />
                       )}
                     </button>
                   )}
-                  {hasRecordedOnce && (
-                    <>
-                      <button
-                        className="font-sans-serif btn btn-primary w-full text-lg"
-                        onClick={submit}
-                      >
-                        확인
-                      </button>
-                      <button
-                        className="font-sans-serif btn btn-outline btn-primary w-full text-lg"
-                        onClick={handleStartRecording}
-                      >
-                        다시 말하기
-                      </button>
-                    </>
-                  )}
+                  <button
+                    className="font-sans-serif btn btn-primary w-full text-lg"
+                    onClick={submit}
+                  >
+                    확인
+                  </button>
                 </>
                 {!isListening && (
                   <button
