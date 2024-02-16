@@ -23,10 +23,10 @@ if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
   // recognition.continuous = true;
 
   // Detect if the app is loaded on a mobile device
-  const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
+  // const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
 
   // Set the continuous flag based on the device type
-  recognition.continuous = !isMobileDevice;
+  recognition.continuous = true;
 }
 
 const useSpeechToText = () => {
@@ -36,20 +36,12 @@ const useSpeechToText = () => {
   useEffect(() => {
     if (!recognition) return;
 
-    let lastDebounceTranscript = "";
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = Array.from(event.results)
         .map((result) => result[0].transcript)
         .join("");
 
-      if (event.results[0].isFinal) setText(transcript);
-      else if (
-        lastDebounceTranscript !== transcript &&
-        transcript.length > lastDebounceTranscript.length
-      ) {
-        lastDebounceTranscript = transcript;
-        setText(lastDebounceTranscript);
-      }
+      setText(transcript);
     };
 
     recognition.onend = () => {
