@@ -43,7 +43,7 @@ export default function Question() {
     });
     setDialog(data);
     setPrevAnswer(""); // Clear previous answers when a new question is loaded
-    setTimeout(() => setIsDialogLoading(false), 200);
+    setTimeout(() => setIsDialogLoading(false), 300);
   }, [index, user]);
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export default function Question() {
   return (
     <div
       className={cc([
-        "flex h-full w-full flex-col items-center overflow-hidden transition-all duration-500",
+        "flex h-full w-full flex-col items-center justify-between overflow-hidden transition-all duration-500",
         dialog?.is_answerable && isDialogEnd && !loading ? "pt-0" : "pt-24",
       ])}
       onClick={() => {
@@ -124,10 +124,13 @@ export default function Question() {
       />
       {dialog && (
         <>
-          <div className="flex justify-center px-8 pt-8 text-center">
-            {loading && (
-              <div className="text-center">말씀하신 내용을 적고 있어요.</div>
-            )}
+          <div className="flex h-full justify-center px-8 pt-8 text-center">
+            {loading &&
+              (dialog.is_answerable && answer ? (
+                <div className="text-center">말씀하신 내용을 적고 있어요.</div>
+              ) : (
+                <div className="loading loading-dots" />
+              ))}
             <LineSplit
               text={dialog.content}
               hasNext={!dialog.is_answerable}
@@ -143,7 +146,7 @@ export default function Question() {
                 initial={{ opacity: 0, y: 100 }}
                 animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
                 exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
-                className="flex h-full w-full shrink-0 flex-col items-center gap-2 px-12 pb-12"
+                className="flex h-[320px] w-full shrink-0 flex-col items-center gap-2 px-12 pb-12"
               >
                 {hasRecognitionSupport && (
                   <button
