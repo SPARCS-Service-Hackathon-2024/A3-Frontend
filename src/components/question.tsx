@@ -7,9 +7,10 @@ import useSpeechRecognition from "../hooks/speechRecog";
 import { QuestionType } from "../types/question";
 import { useUser } from "../store/useUser";
 import { getQuestion, skipQuestion, submitAnswer } from "../apis/question";
+import { useNavigate } from "react-router";
 
 export default function Question() {
-  const { user, setUser, updateNextQuestionId } = useUser();
+  const { user, updateNextQuestionId } = useUser();
   const [index, setIndex] = useState(user.last_answered_question_id || 1);
   const [dialog, setDialog] = useState<QuestionType>();
   const [isDialogEnd, setIsDialogEnd] = useState(false);
@@ -92,6 +93,11 @@ export default function Question() {
       setAnswer(text);
     }
   }, [text, isListening]);
+
+  const navigate = useNavigate();
+
+  if (index === -1) navigate("/");
+  if (!user) navigate("/");
 
   return (
     <div

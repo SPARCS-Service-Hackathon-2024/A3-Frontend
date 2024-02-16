@@ -16,10 +16,16 @@ export default function OnBoard() {
         <div className="loading text-primary" />
       ) : user ? (
         <div className="flex w-full flex-col gap-4">
-          <a href="/main" className="btn btn-primary btn-lg w-full">
-            <FaFeatherAlt />
-            {user.last_answered_question_id === 1 ? "시작하기" : "이어하기"}
-          </a>
+          {user.last_answered_question_id === -1 ? (
+            <div className="text-center text-lg font-bold">
+              자서전이 완성되었습니다.
+            </div>
+          ) : (
+            <a href="/main" className="btn btn-primary btn-lg w-full">
+              <FaFeatherAlt />
+              {user.last_answered_question_id === 1 ? "시작하기" : "이어하기"}
+            </a>
+          )}
           <a
             href="/result"
             className="btn btn-outline btn-primary btn-lg w-full"
