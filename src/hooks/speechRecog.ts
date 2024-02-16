@@ -36,15 +36,20 @@ const useSpeechToText = () => {
 
   useEffect(() => {
     if (!recognition) return;
+    let lastDebounceTranscript = "";
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = Array.from(event.results)
         .map((result) => result[0].transcript)
         .join("");
-      setText(transcript);
-      // if (event.results[0].isFinal) {
-      //   setIsListening(false);
-      // }
+
+      if (event.results[0].isFinal) setText(transcript);
+      else if (
+        lastDebounceTranscript !== transcript &&
+        transcript.length > lastDebounceTranscript.length
+      ) {
+        lastDebounceTranscript = transcript;
+      }
     };
 
     recognition.onend = () => {
