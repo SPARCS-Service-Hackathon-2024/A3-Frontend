@@ -23,10 +23,10 @@ if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
   // recognition.continuous = true;
 
   // Detect if the app is loaded on a mobile device
-  // const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
+  const isMobileDevice = window.navigator.userAgentData?.mobile ?? false;
 
   // Set the continuous flag based on the device type
-  recognition.continuous = true;
+  recognition.continuous = !isMobileDevice;
 }
 
 const useSpeechToText = () => {
