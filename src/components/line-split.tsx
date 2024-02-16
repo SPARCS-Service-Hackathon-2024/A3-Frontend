@@ -47,7 +47,7 @@ export default function LineSplit({
       setPlaying(false);
     };
     setAudio(newAudio);
-  }, [text, muted]);
+  }, [text]);
 
   const mute = useCallback(() => {
     if (!audio) return;
