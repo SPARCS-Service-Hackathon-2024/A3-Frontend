@@ -15,6 +15,7 @@ export default function Question() {
   const [isDialogEnd, setIsDialogEnd] = useState(false);
   const {
     text,
+    reset,
     startListening,
     stopListening,
     isListening,
@@ -34,8 +35,9 @@ export default function Question() {
     });
     setDialog(data);
     setLoading(false);
+    reset(); // Reset the speech recognition to clear any previous text
     setPrevAnswer(""); // Clear previous answers when a new question is loaded
-  }, [index, user]);
+  }, [index, user, reset]);
 
   useEffect(() => {
     fetchQuestion();
@@ -124,7 +126,9 @@ export default function Question() {
               />
             )}
           </div>
-          {prevAnswer + (prevAnswer && answer ? " " : "") + answer}
+          <small>
+            {prevAnswer + (prevAnswer && answer ? " " : "") + answer}
+          </small>
           <AnimatePresence>
             {dialog.is_answerable && isDialogEnd && !loading && (
               <motion.div
@@ -140,18 +144,25 @@ export default function Question() {
                     className="font-sans-serif btn btn-circle btn-primary btn-lg relative mb-4 mt-8 h-32 w-32 text-5xl"
                   >
                     {isListening ? (
-                      <div className="animate-recording absolute inset-0 rounded-full bg-primary/10" />
+                      <>
+                        <div className="animate-recording absolute inset-0 rounded-full bg-primary/10" />
+                        <div className="loading loading-bars" />
+                      </>
                     ) : (
                       <FaMicrophone />
                     )}
                   </button>
                 )}
-                <button
-                  className="font-sans-serif btn btn-primary w-full text-lg"
-                  onClick={submit}
-                >
-                  확인
-                </button>
+                {!isListening &&
+                  (prevAnswer + (prevAnswer && answer ? " " : "") + answer)
+                    .length > 0 && (
+                    <button
+                      className="font-sans-serif btn btn-primary w-full text-lg"
+                      onClick={submit}
+                    >
+                      확인
+                    </button>
+                  )}
                 {!isListening && (
                   <button
                     className="font-sans-serif btn btn-outline btn-primary w-full text-lg"

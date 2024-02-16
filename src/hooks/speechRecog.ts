@@ -32,28 +32,21 @@ if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
 const useSpeechToText = () => {
   const [text, setText] = useState<string>("");
   const [isListening, setIsListening] = useState<boolean>(false);
-  const [hasRecordedOnce, setHasRecordedOnce] = useState(false);
 
   useEffect(() => {
     if (!recognition) return;
-    let lastDebounceTranscript = "";
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = Array.from(event.results)
         .map((result) => result[0].transcript)
         .join("");
-
-      if (event.results[0].isFinal) setText(transcript);
-      else if (
-        lastDebounceTranscript !== transcript &&
-        transcript.length > lastDebounceTranscript.length
-      ) {
-        lastDebounceTranscript = transcript;
-      }
+      setText(transcript);
+      // if (event.results[0].isFinal) {
+      //   setIsListening(false);
+      // }
     };
 
     recognition.onend = () => {
-      setHasRecordedOnce(true);
       setIsListening(false);
     };
 
@@ -78,16 +71,10 @@ const useSpeechToText = () => {
     recognition?.stop();
   };
 
-  const reset = () => {
-    setText("");
-    setHasRecordedOnce(false);
-  };
-
   return {
     text,
     startListening,
     stopListening,
-    hasRecordedOnce,
     isListening,
     hasRecognitionSupport: !!recognition,
   };
