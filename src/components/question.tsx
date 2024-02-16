@@ -25,16 +25,24 @@ export default function Question() {
   const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
 
+  const [isDialogLoading, setIsDialogLoading] = useState(false);
+  const [isSkipLoading, setIsSkipLoading] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(isDialogLoading || isSkipLoading || isSubmitLoading);
+  }, [isDialogLoading, isSkipLoading, isSubmitLoading]);
+
   const fetchQuestion = useCallback(async () => {
     if (!user) return;
-    setLoading(true);
+    setIsDialogLoading(true);
     const data = await getQuestion({
       questionId: index,
       token: user.access_token,
     });
     setDialog(data);
-    setLoading(false);
     setPrevAnswer(""); // Clear previous answers when a new question is loaded
+    setTimeout(() => setIsDialogLoading(false), 200);
   }, [index, user]);
 
   useEffect(() => {
@@ -44,25 +52,25 @@ export default function Question() {
 
   const skip = useCallback(async () => {
     if (!user) return;
-    setLoading(true);
+    setIsSkipLoading(true);
     const next = await skipQuestion({
       questionId: index,
       token: user.access_token,
     });
     setIndex(next.question_id);
     updateNextQuestionId(next.question_id);
-    setLoading(false);
+    setIsSkipLoading(false);
   }, [index, user]);
 
   const submit = async () => {
     if (!user) return;
-    setLoading(true);
+    setIsSubmitLoading(true);
     const next = await submitAnswer({
       questionId: index,
       answer: prevAnswer + (prevAnswer && answer ? " " : "") + answer, // Combine prev and current answers
       token: user.access_token,
     });
-    setLoading(false);
+    setIsSubmitLoading(false);
     setAnswer("");
     setPrevAnswer(""); // Clear after submission
     setIndex(next.question_id);
@@ -118,7 +126,7 @@ export default function Question() {
               text={dialog.content}
               hasNext={!dialog.is_answerable}
               endDialog={() => setIsDialogEnd(true)}
-              hidden={dialog?.is_answerable && loading}
+              hidden={loading}
               muted={isListening}
               setPlaying={setPlaying}
             />
