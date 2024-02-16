@@ -111,18 +111,17 @@ export default function Question() {
       {dialog && (
         <>
           <div className="flex justify-center px-8 pt-8 text-center">
-            {loading ? (
+            {loading && (
               <div className="text-center">말씀하신 내용을 적고 있어요.</div>
-            ) : (
-              <LineSplit
-                text={dialog.content}
-                hasNext={!dialog.is_answerable}
-                endDialog={() => setIsDialogEnd(true)}
-                hidden={dialog?.is_answerable && loading}
-                muted={isListening}
-                setPlaying={setPlaying}
-              />
             )}
+            <LineSplit
+              text={dialog.content}
+              hasNext={!dialog.is_answerable}
+              endDialog={() => setIsDialogEnd(true)}
+              hidden={dialog?.is_answerable && loading}
+              muted={isListening}
+              setPlaying={setPlaying}
+            />
           </div>
           <AnimatePresence>
             {dialog.is_answerable && isDialogEnd && !loading && (

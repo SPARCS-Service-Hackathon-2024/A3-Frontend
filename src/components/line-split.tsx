@@ -47,7 +47,7 @@ export default function LineSplit({
       setPlaying(false);
     };
     setAudio(newAudio);
-  }, [text]);
+  }, [text, muted]);
 
   const mute = useCallback(() => {
     if (!audio) return;
@@ -77,18 +77,21 @@ export default function LineSplit({
   return (
     <div className={cc(["line-split", hidden && "hidden"])}>
       <AnimatePresence>
-        {lines.map((line, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {line.replace("%username%", user!.name)}
-            {index !== text.split("\\n").length - 1 && <br />}
-          </motion.div>
-        ))}
+        {lines.map(
+          (line, index) =>
+            line && (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {line.replace("%username%", user!.name)}
+                {index !== text.split("\\n").length - 1 && <br />}
+              </motion.div>
+            ),
+        )}
         {lines.length === allLines.length && hasNext && (
           <motion.div
             initial={{ opacity: 0 }}
