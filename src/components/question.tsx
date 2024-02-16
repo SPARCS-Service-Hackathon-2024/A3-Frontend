@@ -15,7 +15,6 @@ export default function Question() {
   const [isDialogEnd, setIsDialogEnd] = useState(false);
   const {
     text,
-    reset,
     startListening,
     stopListening,
     isListening,
@@ -35,9 +34,8 @@ export default function Question() {
     });
     setDialog(data);
     setLoading(false);
-    reset(); // Reset the speech recognition to clear any previous text
     setPrevAnswer(""); // Clear previous answers when a new question is loaded
-  }, [index, user, reset]);
+  }, [index, user]);
 
   useEffect(() => {
     fetchQuestion();
