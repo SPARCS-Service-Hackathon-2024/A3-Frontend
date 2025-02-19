@@ -47,6 +47,15 @@ export default function Result() {
           backgroundImage: `url(${selectedBackground})`,
         }}
       >
+        {results.length === 0 && (
+          <div className="flex h-full w-full flex-col items-center justify-center text-center">
+            아직 기록이 없습니다.
+            <br />
+            <span className="text-xl">
+              한 챕터를 마무리할 때마다 기록이 쌓입니다.
+            </span>
+          </div>
+        )}
         {results[index] && (
           <div className="flex h-full w-full flex-col items-center overflow-auto py-8">
             <div key={index}>
