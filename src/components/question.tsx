@@ -10,7 +10,7 @@ import { getQuestion, skipQuestion, submitAnswer } from "../apis/question";
 import { useNavigate } from "react-router";
 
 export default function Question() {
-  const { user, updateNextQuestionId } = useUser();
+  const { user, updateNextQuestionId, updatePrevQuestionID } = useUser();
   const [index, setIndex] = useState(user.last_answered_question_id || 1);
   const [dialog, setDialog] = useState<QuestionType>();
   const [isDialogEnd, setIsDialogEnd] = useState(false);
@@ -59,6 +59,7 @@ export default function Question() {
       token: user.access_token,
     });
     setIndex(next.question_id);
+    updatePrevQuestionID(index);
     updateNextQuestionId(next.question_id);
     setIsSkipLoading(false);
   }, [index, user]);
@@ -74,6 +75,7 @@ export default function Question() {
     setIsSubmitLoading(false);
     setAnswer("");
     setPrevAnswer(""); // Clear after submission
+    updatePrevQuestionID(index);
     setIndex(next.question_id);
     updateNextQuestionId(next.question_id);
   };
