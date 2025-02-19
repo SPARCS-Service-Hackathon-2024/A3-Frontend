@@ -26,17 +26,24 @@ export default function OnBoard() {
               {user.last_answered_question_id === 1 ? "시작하기" : "이어하기"}
             </a>
           )}
-          <a href="/qna" className="btn btn-outline btn-primary btn-lg w-full">
-            <FaList />
-            내역 보기
-          </a>
-          <a
-            href="/result"
-            className="btn btn-outline btn-primary btn-lg w-full"
-          >
-            <FaBook />
-            기록 보기
-          </a>
+          {user.last_answered_question_id > 1 && (
+            <>
+              <a
+                href="/qna"
+                className="btn btn-outline btn-primary btn-lg w-full"
+              >
+                <FaList />
+                내역 보기
+              </a>
+              <a
+                href="/result"
+                className="btn btn-outline btn-primary btn-lg w-full"
+              >
+                <FaBook />
+                기록 보기
+              </a>
+            </>
+          )}
         </div>
       ) : (
         <SocialKakao />
