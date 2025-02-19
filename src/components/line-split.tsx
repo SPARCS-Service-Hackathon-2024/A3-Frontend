@@ -88,7 +88,7 @@ export default function LineSplit({
                 transition={{ duration: 0.2 }}
               >
                 {line.replace("%username%", user!.name)}
-                {index !== text.split("\\n").length - 1 && <br />}
+                {text && index !== text.split("\\n").length - 1 && <br />}
               </motion.div>
             ),
         )}
