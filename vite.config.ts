@@ -4,7 +4,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   server: {
-    allowedHosts: ["13ad-58-226-33-91.ngrok-free.app"],
+    allowedHosts: ["life-book-tau.vercel.app", "localhost"],
   },
   plugins: [
     react(),
