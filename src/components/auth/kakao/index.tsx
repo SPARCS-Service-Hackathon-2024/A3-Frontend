@@ -4,7 +4,7 @@ const SocialKakao = () => {
 
   return (
     <a
-      className="btn btn-lg !w-full !text-lg font-bold"
+      className="btn btn-lg !w-full bg-[#FEE500] !text-lg font-bold text-black"
       href={`https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClientId}&redirect_uri=${appURL}/auth/kakao&response_type=code`}
     >
       카카오로 로그인
