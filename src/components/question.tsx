@@ -62,7 +62,7 @@ export default function Question() {
     updatePrevQuestionID(index);
     updateNextQuestionId(next.question_id);
     setIsSkipLoading(false);
-  }, [index, user]);
+  }, [index, updateNextQuestionId, updatePrevQuestionID, user]);
 
   const submit = async () => {
     if (!user) return;
@@ -105,12 +105,25 @@ export default function Question() {
     <div
       className={cc([
         "flex h-full w-full flex-col items-center justify-between overflow-hidden transition-all duration-500",
-        dialog?.is_answerable && isDialogEnd && !loading ? "pt-0" : "pt-24",
+        dialog?.is_answerable &&
+        isDialogEnd &&
+        (!dialog.is_fixed || index === 1) &&
+        !loading
+          ? "pt-0"
+          : "pt-24",
       ])}
       onClick={() => {
         if (loading) return;
-        if (!dialog?.is_answerable && isDialogEnd) {
+        if (
+          !dialog?.is_answerable &&
+          isDialogEnd &&
+          (!dialog.is_fixed || index === 1)
+        ) {
           skip();
+        }
+        if (!dialog.is_answerable && dialog.next_question_id === null) {
+          updatePrevQuestionID(-1);
+          navigate("/");
         }
       }}
     >
@@ -184,7 +197,7 @@ export default function Question() {
                       확인
                     </button>
                   )}
-                {!isListening && (
+                {!isListening && !dialog.is_fixed && (
                   <button
                     className="font-sans-serif btn btn-outline btn-primary w-full text-lg"
                     onClick={() => skip()}
