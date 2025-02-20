@@ -42,6 +42,7 @@ export default function QnA() {
                     </div>
                     <div className="chat-bubble text-lg">
                       {qa.question_content
+                        .replace(/%username%/g, user?.name || "")
                         .split("\\n")
                         .filter((line) => line.length > 0)
                         .map((line, iii) => (
