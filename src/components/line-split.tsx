@@ -37,7 +37,7 @@ export default function LineSplit({
     audio?.pause();
     setPlaying(false);
     const newAudio = await tts(
-      text.replace("%username%", user!.name).replace(/\\n/g, " "),
+      text.replace(/%username%/g, user!.name).replace(/\\n/g, " "),
     );
     newAudio.play();
     newAudio.onplay = () => {
@@ -87,7 +87,7 @@ export default function LineSplit({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {line.replace("%username%", user!.name)}
+                {line.replace(/%username%/g, user!.name)}
                 {text && index !== text.split("\\n").length - 1 && <br />}
               </motion.div>
             ),

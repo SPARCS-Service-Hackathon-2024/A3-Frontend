@@ -67,14 +67,16 @@ export default function Result() {
                   key={summary.summary_id}
                   className="mb-8 border-b border-b-black/20 pb-4 text-center"
                 >
-                  <div>{summary.question.replace("%username%", user.name)}</div>
+                  <div>
+                    {summary.question.replace(/%username%/g, user.name)}
+                  </div>
                   {splitTextIntoChunks(summary.content).map(
                     (chunk, chunkIndex) => (
                       <div
                         key={chunkIndex}
                         className="mb-8 mt-8 text-center text-xl"
                       >
-                        {chunk.replace("%username%", user.name || "")}
+                        {chunk.replace(/%username%/g, user.name || "")}
                       </div>
                     ),
                   )}
