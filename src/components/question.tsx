@@ -49,7 +49,7 @@ export default function Question() {
   useEffect(() => {
     fetchQuestion();
     setIsDialogEnd(false);
-  }, [fetchQuestion]);
+  }, [index]);
 
   const skip = useCallback(async () => {
     if (!user) return;
@@ -121,7 +121,11 @@ export default function Question() {
         ) {
           skip();
         }
-        if (!dialog.is_answerable && dialog.next_question_id === null) {
+        if (
+          !dialog.is_answerable &&
+          dialog.next_question_id === null &&
+          index > 1
+        ) {
           updatePrevQuestionID(-1);
           navigate("/");
         }
