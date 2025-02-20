@@ -21,7 +21,7 @@ export default function QnA() {
 
   return (
     <Layout>
-      <div className="flex h-screen w-full flex-col items-center justify-center px-12 py-16 text-2xl">
+      <div className="flex h-screen w-full flex-col items-center justify-center px-8 py-16 text-2xl">
         {!histories && <div className="loading loading-dots" />}
         <div className="flex h-full w-full flex-col gap-2 pb-16">
           {histories?.chapters.map((chapter, i) => (
