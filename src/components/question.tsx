@@ -122,7 +122,7 @@ export default function Question() {
               ? "/bomi/speak.gif"
               : "/bomi/default.gif"
         }
-        className="h-[250px]"
+        className="h-[200px]"
       />
       {dialog && (
         <>
@@ -143,8 +143,8 @@ export default function Question() {
             />
           </div>
           {!loading && (
-            <div className="relative flex h-24 w-full shrink-0 flex-col items-center justify-end overflow-hidden ">
-              <div className="absolute top-0 h-12 w-full bg-gradient-to-b from-white to-transparent" />
+            <div className="relative flex h-full w-full flex-col items-center justify-end overflow-hidden">
+              <div className="absolute top-0 h-1/2 w-full bg-gradient-to-b from-white to-transparent" />
               <div className="break-keep px-8 text-center text-xl leading-relaxed">
                 {prevAnswer + (prevAnswer && answer ? " " : "") + answer}
               </div>
