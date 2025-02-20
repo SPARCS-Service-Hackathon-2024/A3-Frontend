@@ -26,7 +26,7 @@ export default function OnBoard() {
               {user.last_answered_question_id === 1 ? "시작하기" : "이어하기"}
             </a>
           )}
-          {user.last_answered_question_id > 1 && (
+          {user.last_answered_question_id !== 1 && (
             <>
               <a
                 href="/qna"
